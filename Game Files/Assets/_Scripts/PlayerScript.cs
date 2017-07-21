@@ -45,18 +45,18 @@ public class Player
 	}
 
 	//Methods
-	public void LevelUp()
-	{
+	//public void LevelUp()
+	//{
 
-	}
+	//}
 
 	//Inertial classes
-	static class PlayerStats
-	{
-		private static Dictionary<Statistics, uint> stats = new Dictionary<Statistics, uint>();
+	//static class PlayerStats
+	//{
+	//	private static Dictionary<Statistics, uint> stats = new Dictionary<Statistics, uint>();
 
-		public static Statistics Skills;
-	}
+	//	public static Statistics Skills;
+	//}
 }
 
 
