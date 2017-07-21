@@ -46,7 +46,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\_Scripts\CameraFollow.cs" />
      <Compile Include="Assets\_Scripts\CharacterController.cs" />
+     <Compile Include="Assets\_Scripts\GoingUp.cs" />
      <Compile Include="Assets\_Scripts\ObjectScript.cs" />
      <Compile Include="Assets\_Scripts\PlayerScript.cs" />
      <Compile Include="Assets\_Scripts\TestScript.cs" />
