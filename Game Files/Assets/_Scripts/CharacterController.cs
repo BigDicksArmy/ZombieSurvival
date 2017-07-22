@@ -7,38 +7,38 @@ public class CharacterController : MonoBehaviour
 	public float speed;
 	private Rigidbody2D rb;
 
-    public bool canGoUp;
+	public bool canGoUp;
 
-    private float vertical_velocity;
-    private float save_gravity;
-    //public GameObject Prefab;
-    //public GameObject SpawnPosition;
-    void Start()
+	private float vertical_velocity;
+	private float save_gravity;
+	//public GameObject Prefab;
+	//public GameObject SpawnPosition;
+	void Start()
 	{
 		//Physics2D.gravity = Vector2.zero;
 		rb = GetComponent<Rigidbody2D>();
-        save_gravity = rb.gravityScale;
+		save_gravity = rb.gravityScale;
 	}
 
-	void FixedUpdate()
+	void Update()
 	{
-        float h = Input.GetAxis("Horizontal");
+		float h = Input.GetAxis("Horizontal");
+		var horizontal_speed = speed * h;
+		rb.velocity = new Vector2(horizontal_speed, 0);
 
-        rb.velocity = new Vector2(speed * h, 0);
+		if (canGoUp)
+		{
+			rb.gravityScale = 0f;
 
-        if (canGoUp)
-        {
-            rb.gravityScale = 0f;
+			vertical_velocity = speed / 2 * Input.GetAxisRaw("Vertical");
+			rb.velocity = new Vector2(horizontal_speed, vertical_velocity);
+		}
+		else
+		{
+			rb.gravityScale = save_gravity;
+		}
 
-            vertical_velocity = speed / 2 * Input.GetAxisRaw("Vertical");
-            rb.velocity = new Vector2(rb.velocity.x, vertical_velocity);
-        }
-        else
-        {
-            rb.gravityScale = save_gravity;
-        }
-
-        /*
+		/*
 		if (Input.GetKeyDown(KeyCode.LeftArrow))
 		{
 			rb.velocity = new Vector2(-speed, 0);
@@ -48,9 +48,9 @@ public class CharacterController : MonoBehaviour
 			rb.velocity = new Vector2(speed, 0);
 		}
         */
-        //if (Input.GetKeyUp(KeyCode.Space))
-        //{
-        //	Instantiate(Prefab, SpawnPosition.transform.position, Quaternion.identity);
-        //}
-    }
+		//if (Input.GetKeyUp(KeyCode.Space))
+		//{
+		//	Instantiate(Prefab, SpawnPosition.transform.position, Quaternion.identity);
+		//}
+	}
 }
