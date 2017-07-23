@@ -5,12 +5,43 @@ using UnityEditor;
 
 public abstract class Object
 {
-	public static int iD;
+	public string iD;
+	public string ModelPath;
 	public GameObject Model;
-
+	public Object(string ModelPath)
+	{
+		iD = ItemCounter.GenerateID();
+		this.ModelPath = ModelPath;
+		Model = Resources.Load(ModelPath, typeof(GameObject)) as GameObject;
+	}
+	public override string ToString()
+	{
+		return "iD: " + iD.ToString();
+	}
 	public abstract void Use();
 }
+public class Weapon : Object
+{
+	public string Name;
+	public Weapon(string ModelPath,string Name) : base(ModelPath)
+	{
+		this.Name = Name;
+	}
 
+	public override void Use()
+	{
+		
+	}
+}
+public static class ItemCounter
+{
+	private static byte count;
+	public static string GenerateID()
+	{
+		count++;
+		return Convert.ToString(count, 16);
+	}
+}
 public class InventoryException : Exception
 {
 	public InventoryException()
