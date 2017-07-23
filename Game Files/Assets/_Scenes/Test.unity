@@ -296,7 +296,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.11582555, y: 0.1353904}
+  m_Offset: {x: 0.11582555, y: 0.1360743}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -307,7 +307,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.011438899, y: 0.16898483}
+  m_Size: {x: 0.011438906, y: 0.22485954}
   m_EdgeRadius: 0
 --- !u!1 &303009249
 GameObject:
@@ -397,10 +397,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 90
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 9.81
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -427,7 +427,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 303009249}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 7a86f0fe7d88b8448aa3aa6b46bd201a, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -835,6 +835,7 @@ Transform:
   m_LocalScale: {x: 20, y: 20, z: 1}
   m_Children:
   - {fileID: 1205978106}
+  - {fileID: 1550383568}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -879,7 +880,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.086956024, y: 0.13539039}
+  m_Offset: {x: 0.086956024, y: 0.13709629}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -890,7 +891,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.009189196, y: 0.16898486}
+  m_Size: {x: 0.0091891885, y: 0.22281557}
   m_EdgeRadius: 0
 --- !u!1 &1148073622
 GameObject:
@@ -986,7 +987,6 @@ Transform:
   - {fileID: 278853916}
   - {fileID: 1094943704}
   - {fileID: 286060845}
-  - {fileID: 1550383568}
   m_Father: {fileID: 671273020}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1175,12 +1175,12 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1550383567}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1205978106}
-  m_RootOrder: 15
+  m_Father: {fileID: 671273020}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1550383569
 BoxCollider2D:
@@ -1194,7 +1194,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.33427465, y: -0.12964764}
+  m_Offset: {x: -0.33591872, y: -0.12964764}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1205,7 +1205,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.0048244, y: 0.2597522}
+  m_Size: {x: 0.05286941, y: 0.2597522}
   m_EdgeRadius: 0
 --- !u!114 &1550383570
 MonoBehaviour:
@@ -1473,11 +1473,11 @@ BoxCollider2D:
   m_GameObject: {fileID: 1984963622}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 7a86f0fe7d88b8448aa3aa6b46bd201a, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0008766353, y: -0.43434846}
+  m_Offset: {x: -0.0008766353, y: -0.40585032}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1488,7 +1488,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.49473912, y: 0.12977242}
+  m_Size: {x: 0.49473912, y: 0.18676871}
   m_EdgeRadius: 0
 --- !u!50 &1984963625
 Rigidbody2D:
@@ -1501,10 +1501,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 90
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 9.81
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -1559,7 +1559,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1984963622}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20.365, y: -4.24, z: 0}
+  m_LocalPosition: {x: -19.53, y: -4.15, z: 0}
   m_LocalScale: {x: 1.552109, y: 1.778285, z: 1}
   m_Children:
   - {fileID: 1357794730}

@@ -37,17 +37,26 @@ public class NormalZombie : MonoBehaviour {
             rb.gravityScale = 0f;
 
             vertical_velocity = speed / 2;
-            rb.velocity = new Vector2(0, vertical_velocity);
+            rb.velocity = new Vector2(rb.velocity.x, vertical_velocity);
         }
         else if (canGoUp && thePlayer.transform.position.y < rb.transform.position.y)
         {
             rb.gravityScale = 0f;
 
             vertical_velocity = speed / 2;
-            rb.velocity = new Vector2(0, -vertical_velocity); //rb.velocity.x,
+            rb.velocity = new Vector2(rb.velocity.x, -vertical_velocity); //rb.velocity.x,
         }
-        if (!canGoUp || thePlayer.transform.position.y == rb.transform.position.y )
-            rb.gravityScale = save_gravity;
 
+        if (!canGoUp || (thePlayer.transform.position.y <= rb.transform.position.y - 0.05 && thePlayer.transform.position.y >= rb.transform.position.y + 0.05))
+        {
+            rb.gravityScale = save_gravity;
+        }
+            
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.name == "Player")
+            Debug.Log("Odgryzlem Ci kurwa ryj");
     }
 }
