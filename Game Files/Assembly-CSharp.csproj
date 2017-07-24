@@ -54,9 +54,11 @@
      <Compile Include="Assets\_Scripts\CameraFollow.cs" />
      <Compile Include="Assets\_Scripts\CharacterController.cs" />
      <Compile Include="Assets\_Scripts\GoingUp.cs" />
+     <Compile Include="Assets\_Scripts\Map01Waypoints.cs" />
      <Compile Include="Assets\_Scripts\ObjectScript.cs" />
      <Compile Include="Assets\_Scripts\PlayerScript.cs" />
      <Compile Include="Assets\_Scripts\TestScript.cs" />
+     <Compile Include="Assets\_Scripts\Waypoints.cs" />
      <Compile Include="Assets\Characters\Zombie\Normal Zombie\NormalZombie.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>E:/Programy/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

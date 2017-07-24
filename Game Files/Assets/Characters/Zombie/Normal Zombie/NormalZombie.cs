@@ -8,6 +8,8 @@ public class NormalZombie : MonoBehaviour {
     public float speed;
     private Rigidbody2D rb;
 
+    public GameObject closest_waypoint;
+
     public bool canGoUp;
 
     private float vertical_velocity;
@@ -19,10 +21,14 @@ public class NormalZombie : MonoBehaviour {
         thePlayer = FindObjectOfType<CharacterController>();
 
         save_gravity = rb.gravityScale;
+
+        closest_waypoint = FindClosestWaypoint();
     }
 
     // Update is called once per frame
     void Update() {
+        rb.transform.position = Vector2.MoveTowards(rb.transform.position, closest_waypoint.transform.position, speed * Time.deltaTime);
+        /*
         if (thePlayer.transform.position.x > rb.transform.position.x)
         {
             rb.velocity = new Vector2(speed, 0);
@@ -51,6 +57,7 @@ public class NormalZombie : MonoBehaviour {
         {
             rb.gravityScale = save_gravity;
         }
+        */
             
     }
 
@@ -58,5 +65,25 @@ public class NormalZombie : MonoBehaviour {
     {
         if (other.name == "Player")
             Debug.Log("Odgryzlem Ci kurwa ryj");
+    }
+
+    public GameObject FindClosestWaypoint()
+    {
+        GameObject[] gos;
+        gos = GameObject.FindGameObjectsWithTag("WayPoints");
+        GameObject closest = null;
+        float distance = Mathf.Infinity;
+        Vector3 position = transform.position;
+        foreach (GameObject go in gos)
+        {
+            Vector3 diff = go.transform.position - position;
+            float curDistance = diff.sqrMagnitude;
+            if (curDistance < distance)
+            {
+                closest = go;
+                distance = curDistance;
+            }
+        }
+        return closest;
     }
 }
