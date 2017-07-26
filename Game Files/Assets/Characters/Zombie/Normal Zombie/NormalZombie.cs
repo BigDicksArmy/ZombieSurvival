@@ -19,8 +19,6 @@ public class NormalZombie : MonoBehaviour {
     List<OneWaypoint> OPEN;
     List<OneWaypoint> CLOSE;
 
-    public WaypointManager all_waypoints;
-
     void Start() {
 
         OPEN = new List<OneWaypoint>();
@@ -28,18 +26,17 @@ public class NormalZombie : MonoBehaviour {
 
         rb = GetComponent<Rigidbody2D>();
         thePlayer = FindObjectOfType<CharacterController>();
+        waypoint_manager = FindObjectOfType<WaypointManager>();
 
         save_gravity = rb.gravityScale;
 
-        closest_waypoint = FindClosestWaypoint();
+        closest_waypoint = waypoint_manager.FindClosestWaypoint(gameObject);
 
         Pathfinding();
     }
 
     void Update() {
         rb.transform.position = Vector2.MoveTowards(rb.transform.position, closest_waypoint.transform.position, speed * Time.deltaTime);
-
-
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -48,35 +45,14 @@ public class NormalZombie : MonoBehaviour {
             Debug.Log("Odgryzlem Ci kurwa ryj");
     }
 
-    public GameObject FindClosestWaypoint()
-    {
-        GameObject[] gos;
-        gos = GameObject.FindGameObjectsWithTag("Waypoint");
-        GameObject closest = null;
-        float distance = Mathf.Infinity;
-        Vector3 position = transform.position;
-        foreach (GameObject go in gos)
-        {
-            Vector3 diff = go.transform.position - position;
-            float curDistance = diff.sqrMagnitude;
-            if (curDistance < distance)
-            {
-                closest = go;
-                distance = curDistance;
-            }
-        }
-        return closest;
-    }
-    
     public void Pathfinding()
     {
         OPEN.Add(closest_waypoint.GetComponent<OneWaypoint>());
         OPEN[0].f = 0;
-
+        
         while(OPEN.Count != 0) // 3
         {
-            OneWaypoint q = new OneWaypoint();
-            q.f = Mathf.Infinity; 
+            OneWaypoint q = OPEN[0];
             for (int i = 0; i < OPEN.Count; ++i) // a)
             {
                 if (OPEN[i].f < q.f)
@@ -93,6 +69,7 @@ public class NormalZombie : MonoBehaviour {
                 //q.adjacent_waypoints[j]
             }
         }
+        
     } 
 }
 

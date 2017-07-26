@@ -1060,7 +1060,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d3cde90198ee334ebf1a5fee6c6c53c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waypoints: []
+  all_waypoints: []
   thePlayer: {fileID: 303009249}
 --- !u!1 &901677853
 GameObject:
@@ -1777,7 +1777,6 @@ MonoBehaviour:
   speed: 5
   closest_waypoint: {fileID: 0}
   canGoUp: 0
-  all_waypoints: {fileID: 0}
 --- !u!61 &1984963624
 BoxCollider2D:
   m_ObjectHideFlags: 0

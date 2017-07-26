@@ -4,49 +4,39 @@ using UnityEngine;
 
 public class WaypointManager : MonoBehaviour {
 
-    public List<GameObject> waypoints;
+    public List<GameObject> all_waypoints;
     public GameObject thePlayer;
-
     private GameObject player_closest_waypoint;
-    private OneWaypoint player_closest_waypoint_script;
 
-
-    // Use this for initialization
     void Start()
     {
-        waypoints.AddRange(GameObject.FindGameObjectsWithTag("Waypoint"));
+        thePlayer = GameObject.FindGameObjectWithTag("Player");
+        all_waypoints.AddRange(GameObject.FindGameObjectsWithTag("Waypoint"));
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-
-        if (FindClosestWaypoint() != player_closest_waypoint)
+        if (FindClosestWaypoint(thePlayer) != player_closest_waypoint) // jak znalazl nowy najblizszy, to usuwa stary i ustawia nowy najblizszy waypoint
         {
-            if (player_closest_waypoint_script != null)
+            if (player_closest_waypoint != null)
             {
-                player_closest_waypoint_script.adjacent_waypoints.Remove(thePlayer);
+                player_closest_waypoint.GetComponent<OneWaypoint>().adjacent_waypoints.Remove(thePlayer);
             }
-            player_closest_waypoint = FindClosestWaypoint();
+            player_closest_waypoint = FindClosestWaypoint(thePlayer);
             Debug.Log("Najblizej gracza: " + player_closest_waypoint.name);
 
-            player_closest_waypoint_script = player_closest_waypoint.GetComponent<OneWaypoint>();
-            player_closest_waypoint_script.adjacent_waypoints.Add(thePlayer);
+            player_closest_waypoint.GetComponent<OneWaypoint>().adjacent_waypoints.Add(thePlayer);
         }
-
-        if (Input.GetKey(KeyCode.Return))
-            player_closest_waypoint_script.adjacent_waypoints.Remove(thePlayer);
     }
 
-    public GameObject FindClosestWaypoint()
+    public GameObject FindClosestWaypoint(GameObject source)
     {
-        GameObject thePlayer = GameObject.FindGameObjectWithTag("Player");
-
         GameObject[] gos;
         gos = GameObject.FindGameObjectsWithTag("Waypoint");
         GameObject closest = null;
         float distance = Mathf.Infinity;
-        Vector3 position = thePlayer.transform.position;
+        Vector3 position = source.transform.position;
         foreach (GameObject go in gos)
         {
             Vector3 diff = go.transform.position - position;
@@ -57,6 +47,7 @@ public class WaypointManager : MonoBehaviour {
                 distance = curDistance;
             }
         }
+        Debug.Log(closest.name);
         return closest;
     }
 }
