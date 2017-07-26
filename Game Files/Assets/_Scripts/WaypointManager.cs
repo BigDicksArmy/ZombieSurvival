@@ -2,22 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Map01Waypoints : MonoBehaviour {
+public class WaypointManager : MonoBehaviour {
 
     public List<GameObject> waypoints;
     public GameObject thePlayer;
 
     private GameObject player_closest_waypoint;
-    private Waypoints player_closest_waypoint_script;
+    private OneWaypoint player_closest_waypoint_script;
 
 
     // Use this for initialization
-    void Start () {
-        waypoints.AddRange(GameObject.FindGameObjectsWithTag("WayPoints"));
+    void Start()
+    {
+        waypoints.AddRange(GameObject.FindGameObjectsWithTag("Waypoint"));
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
 
         if (FindClosestWaypoint() != player_closest_waypoint)
         {
@@ -28,12 +30,12 @@ public class Map01Waypoints : MonoBehaviour {
             player_closest_waypoint = FindClosestWaypoint();
             Debug.Log("Najblizej gracza: " + player_closest_waypoint.name);
 
-            player_closest_waypoint_script = player_closest_waypoint.GetComponent<Waypoints>();
+            player_closest_waypoint_script = player_closest_waypoint.GetComponent<OneWaypoint>();
             player_closest_waypoint_script.adjacent_waypoints.Add(thePlayer);
         }
 
-         if (Input.GetKey(KeyCode.Return))
-                player_closest_waypoint_script.adjacent_waypoints.Remove(thePlayer);
+        if (Input.GetKey(KeyCode.Return))
+            player_closest_waypoint_script.adjacent_waypoints.Remove(thePlayer);
     }
 
     public GameObject FindClosestWaypoint()
@@ -41,7 +43,7 @@ public class Map01Waypoints : MonoBehaviour {
         GameObject thePlayer = GameObject.FindGameObjectWithTag("Player");
 
         GameObject[] gos;
-        gos = GameObject.FindGameObjectsWithTag("WayPoints");
+        gos = GameObject.FindGameObjectsWithTag("Waypoint");
         GameObject closest = null;
         float distance = Mathf.Infinity;
         Vector3 position = thePlayer.transform.position;

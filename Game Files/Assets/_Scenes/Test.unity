@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 11287899}
   m_Layer: 0
   m_Name: Dolne drzwi
-  m_TagString: WayPoints
+  m_TagString: Waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -151,8 +151,7 @@ MonoBehaviour:
   adjacent_waypoints:
   - {fileID: 901677853}
   - {fileID: 25198133}
-  this_waypoints_script: {fileID: 0}
-  other_waypoints_script: {fileID: 0}
+  f: 0
 --- !u!1 &25198133
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,7 +163,7 @@ GameObject:
   - component: {fileID: 25198135}
   m_Layer: 0
   m_Name: Prawe okno
-  m_TagString: WayPoints
+  m_TagString: Waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -195,8 +194,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   adjacent_waypoints:
   - {fileID: 11287897}
-  this_waypoints_script: {fileID: 0}
-  other_waypoints_script: {fileID: 0}
+  f: 0
 --- !u!1 &39819951
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,7 +206,7 @@ GameObject:
   - component: {fileID: 39819953}
   m_Layer: 0
   m_Name: Schody gora
-  m_TagString: WayPoints
+  m_TagString: Waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -240,8 +238,7 @@ MonoBehaviour:
   adjacent_waypoints:
   - {fileID: 403757872}
   - {fileID: 901677853}
-  this_waypoints_script: {fileID: 0}
-  other_waypoints_script: {fileID: 0}
+  f: 0
 --- !u!1 &148496749
 GameObject:
   m_ObjectHideFlags: 0
@@ -749,7 +746,7 @@ GameObject:
   - component: {fileID: 403757874}
   m_Layer: 0
   m_Name: Gorne drzwi
-  m_TagString: WayPoints
+  m_TagString: Waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -780,8 +777,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   adjacent_waypoints:
   - {fileID: 39819951}
-  this_waypoints_script: {fileID: 0}
-  other_waypoints_script: {fileID: 0}
+  f: 0
 --- !u!1 &422559153
 GameObject:
   m_ObjectHideFlags: 0
@@ -1061,7 +1057,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 736696257}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a1e38518a25df74989ed4be07baa384, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d3cde90198ee334ebf1a5fee6c6c53c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   waypoints: []
@@ -1077,7 +1073,7 @@ GameObject:
   - component: {fileID: 901677855}
   m_Layer: 0
   m_Name: Schody dol
-  m_TagString: WayPoints
+  m_TagString: Waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1110,8 +1106,7 @@ MonoBehaviour:
   - {fileID: 1814785958}
   - {fileID: 11287897}
   - {fileID: 39819951}
-  this_waypoints_script: {fileID: 0}
-  other_waypoints_script: {fileID: 0}
+  f: 0
 --- !u!1 &1094943703
 GameObject:
   m_ObjectHideFlags: 0
@@ -1663,7 +1658,7 @@ GameObject:
   - component: {fileID: 1814785960}
   m_Layer: 0
   m_Name: Lewe okno
-  m_TagString: WayPoints
+  m_TagString: Waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1694,8 +1689,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   adjacent_waypoints:
   - {fileID: 901677853}
-  this_waypoints_script: {fileID: 0}
-  other_waypoints_script: {fileID: 0}
+  f: 0
 --- !u!1 &1944411476
 GameObject:
   m_ObjectHideFlags: 0
@@ -1783,6 +1777,7 @@ MonoBehaviour:
   speed: 5
   closest_waypoint: {fileID: 0}
   canGoUp: 0
+  all_waypoints: {fileID: 0}
 --- !u!61 &1984963624
 BoxCollider2D:
   m_ObjectHideFlags: 0
