@@ -12,6 +12,7 @@ public class WaypointManager : MonoBehaviour {
     {
         thePlayer = GameObject.FindGameObjectWithTag("Player");
         all_waypoints.AddRange(GameObject.FindGameObjectsWithTag("Waypoint"));
+        all_waypoints.Add(thePlayer);
     }
 
 
@@ -26,6 +27,7 @@ public class WaypointManager : MonoBehaviour {
             player_closest_waypoint = FindClosestWaypoint(thePlayer);
             Debug.Log("Najblizej gracza: " + player_closest_waypoint.name);
 
+            //player_closest_waypoint.GetComponent<OneWaypoint>().adjacent_waypoints.Add(thePlayer);
             player_closest_waypoint.GetComponent<OneWaypoint>().adjacent_waypoints.Add(thePlayer);
         }
     }
@@ -47,7 +49,6 @@ public class WaypointManager : MonoBehaviour {
                 distance = curDistance;
             }
         }
-        Debug.Log(closest.name);
         return closest;
     }
 }

@@ -149,9 +149,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   adjacent_waypoints:
-  - {fileID: 901677853}
+  - {fileID: 11287897}
   - {fileID: 25198133}
-  f: 0
+  adjacent_waypoints_cost: []
 --- !u!1 &25198133
 GameObject:
   m_ObjectHideFlags: 0
@@ -194,7 +194,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   adjacent_waypoints:
   - {fileID: 11287897}
-  f: 0
+  adjacent_waypoints_cost: []
 --- !u!1 &39819951
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,9 +236,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   adjacent_waypoints:
-  - {fileID: 403757872}
   - {fileID: 901677853}
-  f: 0
+  - {fileID: 403757872}
+  adjacent_waypoints_cost: []
 --- !u!1 &148496749
 GameObject:
   m_ObjectHideFlags: 0
@@ -777,7 +777,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   adjacent_waypoints:
   - {fileID: 39819951}
-  f: 0
+  adjacent_waypoints_cost: []
 --- !u!1 &422559153
 GameObject:
   m_ObjectHideFlags: 0
@@ -1106,7 +1106,7 @@ MonoBehaviour:
   - {fileID: 1814785958}
   - {fileID: 11287897}
   - {fileID: 39819951}
-  f: 0
+  adjacent_waypoints_cost: []
 --- !u!1 &1094943703
 GameObject:
   m_ObjectHideFlags: 0
@@ -1689,7 +1689,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   adjacent_waypoints:
   - {fileID: 901677853}
-  f: 0
+  adjacent_waypoints_cost: []
 --- !u!1 &1944411476
 GameObject:
   m_ObjectHideFlags: 0
@@ -1775,6 +1775,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  player_object: {fileID: 0}
   closest_waypoint: {fileID: 0}
   canGoUp: 0
 --- !u!61 &1984963624

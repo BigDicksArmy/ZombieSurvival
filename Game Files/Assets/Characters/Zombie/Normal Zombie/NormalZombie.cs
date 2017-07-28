@@ -8,6 +8,7 @@ public class NormalZombie : MonoBehaviour {
     public float speed;
     private Rigidbody2D rb;
 
+    public GameObject player_object;
     public GameObject closest_waypoint;
     private WaypointManager waypoint_manager;
 
@@ -16,13 +17,14 @@ public class NormalZombie : MonoBehaviour {
     private float vertical_velocity;
     private float save_gravity;
 
-    List<OneWaypoint> OPEN;
-    List<OneWaypoint> CLOSE;
+    // public List<OneWaypoint> OPEN;
+    // public List<OneWaypoint> CLOSE;
 
     void Start() {
+        player_object = GameObject.FindGameObjectWithTag("Player");
 
-        OPEN = new List<OneWaypoint>();
-        CLOSE = new List<OneWaypoint>();
+        //OPEN = new List<OneWaypoint>();
+        //CLOSE = new List<OneWaypoint>();
 
         rb = GetComponent<Rigidbody2D>();
         thePlayer = FindObjectOfType<CharacterController>();
@@ -32,11 +34,13 @@ public class NormalZombie : MonoBehaviour {
 
         closest_waypoint = waypoint_manager.FindClosestWaypoint(gameObject);
 
-        Pathfinding();
+        //Pathfinding();
+        
     }
 
     void Update() {
         rb.transform.position = Vector2.MoveTowards(rb.transform.position, closest_waypoint.transform.position, speed * Time.deltaTime);
+        dijsktra();
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -45,6 +49,89 @@ public class NormalZombie : MonoBehaviour {
             Debug.Log("Odgryzlem Ci kurwa ryj");
     }
 
+
+    void dijkstra_preparation()
+    {
+        //for (int i = 0; i < waypoint_manager.all_waypoints.Count; ++i)
+        //{
+        //    for (int j = 0; j < waypoint_manager.all_waypoints[i].GetComponent<OneWaypoint>().adjacent_waypoints.Count; ++j)
+        //    {
+
+
+        //        //waypoint_manager.all_waypoints[j].GetComponent<OneWaypoint>().cost = (waypoint_manager.all_waypoints[j].GetComponent<OneWaypoint>().adjacent_waypoints[j].transform.position - waypoint_manager.all_waypoints[i].transform.position).magnitude;
+        //    }
+
+        //    //(waypoint_manager.all_waypoints[j].GetComponent<OneWaypoint>().transform.position - )
+        //}
+
+    }
+
+    public float[] prev;
+    public float[] dist;
+    public float[] selected;
+
+    void dijsktra()
+    {
+        // source to transform.position
+        // target to player_object.transform.position
+        // cost to waypoint_manager.all_waypoints[j].GetComponent<OneWaypoint>().adjacent_waypoints_cost ?
+        dist = new float[waypoint_manager.all_waypoints.Count];
+        prev = new float[waypoint_manager.all_waypoints.Count];
+        selected = new float[waypoint_manager.all_waypoints.Count];
+
+        int start = -1;
+        int target = -1;
+        for (int i = 0; i < waypoint_manager.all_waypoints.Count; ++i) //znajdz indeks closest waypoint to start
+        {
+            if (waypoint_manager.all_waypoints[i] == closest_waypoint)
+                start = i;
+            if (waypoint_manager.all_waypoints[i] == player_object)
+                target = i;
+        }
+
+        if (start == -1 || target == -1)
+            Debug.Log("Blad 83 linijka normal zombie");
+
+        for (int i = 0; i < selected.Length; ++i)
+        {
+            selected[i] = 0f;
+            dist[i] = Mathf.Infinity;
+            prev[i] = -1f;
+        }
+
+        selected[start] = 1;
+        dist[start] = 0;
+        int m;
+        float min, d;
+        while(selected[target] == 0)
+        {
+            min = Mathf.Infinity;
+            m = 0;
+            for (int j = 0; j < waypoint_manager.all_waypoints.Count; ++j)
+            {
+                d = dist[start] + ((transform.position - waypoint_manager.all_waypoints[j].transform.position).magnitude);
+                if (d < dist[j] && selected[j] == 0)
+                {
+                    dist[j] = d;
+                    prev[j] = start;
+                }
+                if (min > dist[j] && selected[j] == 0)
+                {
+                    min = dist[j];
+                    m = j;
+                }
+            }
+            start = m;
+            selected[start] = 1;
+        }
+        start = target;
+        Debug.Log("Odleglosc to: " + dist[target]);
+        //Debug.Log("Droga: " + )
+    }
+
+
+
+    /*
     public void Pathfinding()
     {
         OPEN.Add(closest_waypoint.GetComponent<OneWaypoint>());
@@ -58,19 +145,66 @@ public class NormalZombie : MonoBehaviour {
                 if (OPEN[i].f < q.f)
                     q = OPEN[i];
             }
-            OPEN.Remove(q); // b)
+            OPEN.Remove(q); // b)  //tu moze byc blad
+
+
+            for (int a = 0; a < waypoint_manager.all_waypoints.Count; ++a)
+                //for (int b = 0; b < waypoint_manager.all_waypoints[a].GetComponent<OneWaypoint>().adjacent_waypoints.Count; ++b)
+            {
+                waypoint_manager.all_waypoints[a].GetComponent<OneWaypoint>().g = (waypoint_manager.all_waypoints[a].transform.position - gameObject.transform.position).magnitude;
+                waypoint_manager.all_waypoints[a].GetComponent<OneWaypoint>().h = (thePlayer.transform.position - waypoint_manager.all_waypoints[a].transform.position).magnitude;
+            }
+                    
             
             for (int j = 0; j < q.adjacent_waypoints.Count; ++j) // d)
             {
                 if (q.adjacent_waypoints[j] == thePlayer) // i)
                 {
-                    break;
+                    q.adjacent_waypoints[j].GetComponent<OneWaypoint>().g = q.g + (q.adjacent_waypoints[j].transform.position - q.transform.position).magnitude;
+                    q.adjacent_waypoints[j].GetComponent<OneWaypoint>().h = (player_object.transform.position - q.adjacent_waypoints[j].transform.position).magnitude;
+                    q.adjacent_waypoints[j].GetComponent<OneWaypoint>().f = q.adjacent_waypoints[j].GetComponent<OneWaypoint>().g + q.adjacent_waypoints[j].GetComponent<OneWaypoint>().h;
+
+                    break; // stop search to chyba inaczej
                 }
-                //q.adjacent_waypoints[j]
+
+                //jeśli transform position jest takie same, tylko f mniejsze // ii)
+                bool next = false;
+                for (int k = 0; k < OPEN.Count; ++k)
+                {
+                    if (OPEN[k].transform.position == q.adjacent_waypoints[j].transform.position)
+                        if (OPEN[k].f < q.adjacent_waypoints[j].GetComponent<OneWaypoint>().f)
+                        {
+                            next = true;
+                            continue;
+                        }
+                }
+                if (next == true)
+                    continue;
+
+
+                // iii)
+                bool next2 = false;
+                for (int h = 0; h < CLOSE.Count; ++h)
+                {
+                    if (CLOSE[h].transform.position == q.adjacent_waypoints[j].transform.position)
+                        if (CLOSE[h].f < q.adjacent_waypoints[j].GetComponent<OneWaypoint>().f)
+                        {
+                            next2 = true;
+                            continue;
+                        }
+                        else
+                        {
+                            OPEN.Add(CLOSE[h]);
+                        }
+                }
+                if (next2 == true)
+                    continue;
             }
+
+            CLOSE.Add(q); // e)
         }
-        
     } 
+    */
 }
 
 
