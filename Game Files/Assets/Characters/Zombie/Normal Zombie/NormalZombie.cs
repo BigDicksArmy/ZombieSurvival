@@ -12,6 +12,7 @@ public class NormalZombie : MonoBehaviour {
     public GameObject closest_waypoint;
     private WaypointManager waypoint_manager;
 
+
     public bool canGoUp;
 
     private float vertical_velocity;
@@ -33,14 +34,15 @@ public class NormalZombie : MonoBehaviour {
         save_gravity = rb.gravityScale;
 
         closest_waypoint = waypoint_manager.FindClosestWaypoint(gameObject);
-
-        //Pathfinding();
         
     }
 
     void Update() {
         rb.transform.position = Vector2.MoveTowards(rb.transform.position, closest_waypoint.transform.position, speed * Time.deltaTime);
-        dijsktra();
+
+        if (Input.GetKeyDown(KeyCode.Return))
+            dijsktra();
+
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -49,23 +51,124 @@ public class NormalZombie : MonoBehaviour {
             Debug.Log("Odgryzlem Ci kurwa ryj");
     }
 
-
-    void dijkstra_preparation()
+    public List<GameObject> Q;
+    public GameObject u;
+    void dijsktra()
     {
+        Debug.Log("Uruchamiam dijsktre:");
+        for (int i = 0; i < waypoint_manager.all_waypoints.Count; ++i)
+        {
+            waypoint_manager.all_waypoints[i].GetComponent<OneWaypoint>().dist = Mathf.Infinity;
+            waypoint_manager.all_waypoints[i].GetComponent<OneWaypoint>().prev = null;
+        }
+        closest_waypoint.GetComponent<OneWaypoint>().dist = 0; // distance from source to source
+
         //for (int i = 0; i < waypoint_manager.all_waypoints.Count; ++i)
         //{
-        //    for (int j = 0; j < waypoint_manager.all_waypoints[i].GetComponent<OneWaypoint>().adjacent_waypoints.Count; ++j)
-        //    {
-
-
-        //        //waypoint_manager.all_waypoints[j].GetComponent<OneWaypoint>().cost = (waypoint_manager.all_waypoints[j].GetComponent<OneWaypoint>().adjacent_waypoints[j].transform.position - waypoint_manager.all_waypoints[i].transform.position).magnitude;
-        //    }
-
-        //    //(waypoint_manager.all_waypoints[j].GetComponent<OneWaypoint>().transform.position - )
+        //    if (waypoint_manager.all_waypoints[i].GetComponent<OneWaypoint>().dist == 0)
+        //        Debug.Log("WTF");
         //}
 
+        Q.AddRange(waypoint_manager.all_waypoints);
+        while (Q.Count > 0)
+        {
+            u = Q[0];
+            for (int i = 0; i < Q.Count; ++i)
+            {
+                if (u.GetComponent<OneWaypoint>().dist > Q[i].GetComponent<OneWaypoint>().dist)
+                    u = Q[i];
+            }
+            Debug.Log(u.GetComponent<OneWaypoint>().dist);
+            Q.Remove(u);
+
+            float alt;
+            for (int i = 0; i < u.GetComponent<OneWaypoint>().adjacent_waypoints.Count; ++i) // nizej jeszcze 1 if z ?
+            {
+                if (Q.Contains(u.GetComponent<OneWaypoint>().adjacent_waypoints[i])) //??
+                {
+                    alt = u.GetComponent<OneWaypoint>().dist + u.GetComponent<OneWaypoint>().adjacent_waypoints_cost[i];  // z closest waypoint do u + z u do aktywnego z adjacent waypointow
+                    Debug.Log(u.GetComponent<OneWaypoint>().dist + "  " + u.GetComponent<OneWaypoint>().adjacent_waypoints_cost[i]);
+                    //Debug.Log(alt + "  " + u.GetComponent<OneWaypoint>().adjacent_waypoints[i].GetComponent<OneWaypoint>().dist);
+
+                    if (alt < u.GetComponent<OneWaypoint>().adjacent_waypoints[i].GetComponent<OneWaypoint>().dist)
+                    {
+                        Debug.Log("Zmieniam wazny element");
+                        u.GetComponent<OneWaypoint>().adjacent_waypoints[i].GetComponent<OneWaypoint>().dist = alt;
+                        u.GetComponent<OneWaypoint>().adjacent_waypoints[i].GetComponent<OneWaypoint>().prev = u;
+                    }
+                }
+            }
+
+        }
     }
 
+    /////////////////////////////// to moze zadzialac
+    /*
+    public List<GameObject> Q;
+    public GameObject u;
+    void dijsktra()
+    {
+        Debug.Log("Uruchamiam dijsktre");
+        for (int i = 0; i < waypoint_manager.all_waypoints.Count; ++i)
+        {
+            //waypoint_manager.all_waypoints[i].GetComponent<OneWaypoint>().dist = Mathf.Infinity;
+            waypoint_manager.all_waypoints[i].GetComponent<OneWaypoint>().prev = null;
+        }
+        //closest_waypoint.GetComponent<OneWaypoint>().cost_to_player = 0;
+        Q.AddRange(waypoint_manager.all_waypoints);
+
+        while (Q.Count > 0)
+        {
+            u = Q[0];
+            for (int i = 0; i < Q.Count; ++i)
+            {
+                if (u.GetComponent<OneWaypoint>().cost_to_player < Q[i].GetComponent<OneWaypoint>().cost_to_player)
+                    u = Q[i];
+            }
+            Q.Remove(u);
+
+            float alt;
+            for (int i = 0; i < u.GetComponent<OneWaypoint>().adjacent_waypoints.Count; ++i)
+            {
+                if (Q.Contains(u.GetComponent<OneWaypoint>().adjacent_waypoints[i])) //?
+                {
+                    alt = u.GetComponent<OneWaypoint>().cost_to_player + u.GetComponent<OneWaypoint>().adjacent_waypoints_cost[i];
+
+                    if (alt < u.GetComponent<OneWaypoint>().adjacent_waypoints[i].GetComponent<OneWaypoint>().cost_to_player) //nigdy sie nie wykonuje
+                    {
+                        Debug.Log("Zmienilem cos w prev dla i = " + i);
+                        u.GetComponent<OneWaypoint>().adjacent_waypoints[i].GetComponent<OneWaypoint>().cost_to_player = alt; //u.GetComponent<OneWaypoint>().adjacent_waypoints[i].GetComponent<OneWaypoint>().dist = alt;
+                        u.GetComponent<OneWaypoint>().adjacent_waypoints[i].GetComponent<OneWaypoint>().prev = u;
+                    }
+                }
+            }
+        }
+    }
+    */
+    ///////////////////////////////
+
+    /*
+    public List<GameObject> pq;
+    void dijsktra()
+    {
+        pq.Add(closest_waypoint);
+
+        while (pq.Count > 0)
+        {
+            
+            for (int i = 0; i <pq.Count; ++i) // usuwamy najmniejsze z pq
+            {
+                if (pq[i].GetComponent<OneWaypoint>().cost_to_player < waypoint_manager.GetComponent<FakeWaypoint>().cost_to_player)
+                    waypoint_manager.GetComponent<FakeWaypoint>().cost_to_player = pq[i].GetComponent<OneWaypoint>().cost_to_player;
+            }
+            for (int j = 0; j < )
+
+        }
+
+    }
+    */
+    /*
+    //  Dijsktra
     public float[] prev;
     public float[] dist;
     public float[] selected;
@@ -109,7 +212,16 @@ public class NormalZombie : MonoBehaviour {
             m = 0;
             for (int j = 0; j < waypoint_manager.all_waypoints.Count; ++j)
             {
-                d = dist[start] + ((transform.position - waypoint_manager.all_waypoints[j].transform.position).magnitude);
+                int temp = -1;
+                for (int k = 0; k < waypoint_manager.all_waypoints[start].GetComponent<OneWaypoint>().adjacent_waypoints_cost.Count; ++k)
+                {
+                    if (waypoint_manager.all_waypoints[start] == waypoint_manager.all_waypoints[start].GetComponent<OneWaypoint>().adjacent_waypoints[k])
+                        temp = k;
+                }
+                
+
+                d = dist[start] + waypoint_manager.all_waypoints[start].GetComponent<OneWaypoint>().adjacent_waypoints_cost[temp]; // odleglosc od startu do waypointa [j]
+
                 if (d < dist[j] && selected[j] == 0)
                 {
                     dist[j] = d;
@@ -128,10 +240,10 @@ public class NormalZombie : MonoBehaviour {
         Debug.Log("Odleglosc to: " + dist[target]);
         //Debug.Log("Droga: " + )
     }
+    
+    */
 
-
-
-    /*
+    /* A*
     public void Pathfinding()
     {
         OPEN.Add(closest_waypoint.GetComponent<OneWaypoint>());
@@ -240,3 +352,51 @@ if (!canGoUp || (thePlayer.transform.position.y <= rb.transform.position.y - 0.0
     rb.gravityScale = save_gravity;
 }
 */
+
+
+
+
+
+
+
+
+    /*
+/////////////////////////////// to moze zadzialac
+public List<GameObject> Q;
+void dijsktra()
+{
+    for (int i = 0; i < waypoint_manager.all_waypoints.Count; ++i)
+    {
+        waypoint_manager.all_waypoints[i].GetComponent<OneWaypoint>().dist = Mathf.Infinity;
+        waypoint_manager.all_waypoints[i].GetComponent<OneWaypoint>().prev = null;
+    }
+    closest_waypoint.GetComponent<OneWaypoint>().dist = 0;
+    Q.AddRange(waypoint_manager.all_waypoints);
+    while (Q.Count > 0)
+    {
+        GameObject u = Q[0];
+        for (int i = 0; i < Q.Count; ++i)
+        {
+            if (u.GetComponent<OneWaypoint>().dist < Q[i].GetComponent<OneWaypoint>().dist)
+                u = Q[i];
+        }
+        Q.Remove(u);
+
+
+        float alt;
+        for (int i = 0; i < u.GetComponent<OneWaypoint>().adjacent_waypoints.Count; ++i)
+        {
+            if (Q.Contains(u.GetComponent<OneWaypoint>().adjacent_waypoints[i])) //?
+            {
+                alt = u.GetComponent<OneWaypoint>().dist + u.GetComponent<OneWaypoint>().adjacent_waypoints_cost[i];
+
+                if (alt < u.GetComponent<OneWaypoint>().adjacent_waypoints[i].GetComponent<OneWaypoint>().dist)
+                {
+                    u.GetComponent<OneWaypoint>().adjacent_waypoints[i].GetComponent<OneWaypoint>().dist = alt;
+                    u.GetComponent<OneWaypoint>().adjacent_waypoints[i].GetComponent<OneWaypoint>().prev = u;
+                }
+            }
+        }
+    }
+}
+///////////////////////////////*/
