@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4559999553923460}
   - component: {fileID: 212270952131799788}
   m_Layer: 0
-  m_Name: Weapon
+  m_Name: Uzi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

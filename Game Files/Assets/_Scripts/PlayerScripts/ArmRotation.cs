@@ -8,6 +8,12 @@ public class ArmRotation : MonoBehaviour
 	private Transform playerTransform;
 	private Weapon weapon;
 
+	private void Awake()
+	{
+		mainCamera = Camera.main;
+		playerTransform = transform;
+	}
+
 	void Update()
 	{
 		Aim();

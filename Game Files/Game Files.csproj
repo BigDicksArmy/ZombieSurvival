@@ -86,6 +86,7 @@
   <ItemGroup>
     <Compile Include="Assets\_Scripts\CameraFollow.cs" />
     <Compile Include="Assets\_Scripts\Collect.cs" />
+    <Compile Include="Assets\_Scripts\ExtensionMethods\ExtensionMethods.cs" />
     <Compile Include="Assets\_Scripts\PlayerScripts\ArmRotation.cs" />
     <Compile Include="Assets\_Scripts\PlayerScripts\CharacterController.cs" />
     <Compile Include="Assets\_Scripts\PlayerScripts\Equipment.cs" />

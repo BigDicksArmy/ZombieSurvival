@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-	private ArmRotation arm;
 	// Use this for initialization
 	private void Awake()
 	{
-		arm = FindObjectOfType<ArmRotation>();
+		
 	}
 
 	// Update is called once per frame
