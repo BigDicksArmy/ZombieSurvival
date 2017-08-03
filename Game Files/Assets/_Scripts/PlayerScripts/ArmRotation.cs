@@ -6,7 +6,6 @@ public class ArmRotation : MonoBehaviour
 {
 	private Camera mainCamera;
 	private Transform playerTransform;
-	private Weapon weapon;
 
 	private void Awake()
 	{

@@ -1,102 +1,123 @@
 ﻿using UnityEngine;
 
-public class Weapons
+namespace Player
 {
-	//Stores Game Objects which are representations of weapons
-	//not a list but list sounds better than array
-	public GameObject[] WeaponList;
-
-	//Indexer to acces the game objects by names 
-	//Implemented using a singleton
-	public GameObject this[string name]
+	class Equipment : MonoBehaviour
 	{
-		get
+		private SpriteRenderer spriteRenderer;
+		private GameObject WeaponPlace;
+		private Vector3 LastWeaponPlace;
+
+		//PUBLIC VARIABLES
+		public int EquipmentSize;
+		public int WeaponsCount;
+		public GameObject[] Weapons;
+
+		//PUBLIC PROPERTIES
+		public bool IsEmpty
 		{
-			for (int i = 0; i < WeaponList.Length; i++)
+			get
 			{
-				if (name == WeaponList[i].name)
+				if (WeaponsCount == 0)
 				{
-					return WeaponList[i];
+					return true;
+				}
+				return false;
+			}
+		}
+
+		public bool IsFull
+		{
+			get
+			{
+				if (WeaponsCount == EquipmentSize)
+				{
+					return true;
+				}
+				return false;
+			}
+		}
+
+		//PUBLIC METHODS
+		public void Add(GameObject obj)
+		{
+			if (!Search(obj))
+			{
+				WeaponsCount++;
+				if (WeaponsCount - 1 < EquipmentSize)
+				{
+					Weapons[WeaponsCount - 1] = obj;
+				}
+				else
+				{
+					WeaponsCount = EquipmentSize;
+				}
+			}
+		}
+
+		public bool Search(GameObject obj)
+		{
+			for (int i = 0; i < EquipmentSize; i++)
+			{
+				if (Weapons[i] == obj)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public GameObject Search(string name)
+		{
+			for (int i = 0; i < EquipmentSize; i++)
+			{
+				if (Weapons[i].name == name)
+				{
+					return Weapons[i];
 				}
 			}
 			return null;
 		}
-	}
 
-	public GameObject this[int index]
-	{
-		get
+		//PRIVATE METHODS
+		private void Awake()
 		{
-			return WeaponList[index];
+			WeaponPlace = GameObject.Find("WeaponPlace");
+			spriteRenderer = WeaponPlace.GetComponent<SpriteRenderer>();
 		}
-		set
+		private void Start()
 		{
-			WeaponList[index] = value;
+			LastWeaponPlace = WeaponPlace.transform.localPosition;
+			Weapons = new GameObject[EquipmentSize];
+			WeaponsCount = 0;
 		}
-	}
-}
-
-public class Bullets
-{
-	//Stores Game Objects which are representations of bullets
-	public GameObject[] BulletList;
-
-	//Indexer to acces the game objects by names
-	public GameObject this[string name]
-	{
-		get
-		{
-			for (int i = 0; i < BulletList.Length; i++)
+		private void SelectWeapon(string name) 
+		{			
+			for (int i = 0; i < Weapons.Length; i++)
 			{
-				if (name == BulletList[i].name)
+				if (Weapons[i].name == name)
 				{
-					return BulletList[i];
+					WeaponPlace.transform.position = LastWeaponPlace;
+					spriteRenderer.sprite = Weapons[i].GetComponent<SpriteRenderer>().sprite;
+					Vector3 offset = Weapons[i].transform.Find("GripSpot").position + Weapons[i].transform.position;
+					WeaponPlace.transform.localPosition -= offset;
+					break;
 				}
 			}
-			return null;
 		}
-	}
-	public GameObject this[int index]
-	{
-		get
+		private void Update()
 		{
-			return BulletList[index];
+			if (!IsEmpty)
+			{
+				if (Input.GetKeyDown(KeyCode.Alpha1) && Search("Shotgun")) //null reference exc when less than one weapon propably smth 2 do with the search()
+				{
+					SelectWeapon("Shotgun");
+				}
+				if (Input.GetKeyDown(KeyCode.Alpha2) && Search("Uzi"))
+				{
+					SelectWeapon("Uzi");
+				}
+			}
 		}
-	}
-}
-
-public class Equipment : MonoBehaviour
-{
-	public static Weapons Weapons = new Weapons();
-
-	//Path to each weapon in the Resource folder 
-	public string[] WeaponPathList;
-
-	public static Bullets Bullets = new Bullets();
-	
-	//Path to each weapon in the Resource folder 
-	public string[] BulletPathList;
-
-	private void Awake()
-	{
-		Weapons.WeaponList = new GameObject[WeaponPathList.Length];
-
-		for (int i = 0; i < WeaponPathList.Length; i++)
-		{
-			Weapons.WeaponList[i] = Load("_Prefabs/Weapons/" + WeaponPathList[i]);// in the path put only what comes after Assets/Resources/ and don't put in the file extension
-		}
-
-		Bullets.BulletList = new GameObject[BulletPathList.Length];
-
-		for (int i = 0; i < BulletPathList.Length; i++)
-		{
-			Bullets.BulletList[i] = Load("_Prefabs/Weapons/" + BulletPathList[i]);
-		}
-	}
-
-	//Only to simplify the expressions
-	private GameObject Load(string Path)
-	{
-		return Resources.Load(Path, typeof(GameObject)) as GameObject;
 	}
 }

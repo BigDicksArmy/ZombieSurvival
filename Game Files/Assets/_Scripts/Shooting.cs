@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Shooting : MonoBehaviour
 {
-
 	public uint MagazineSize;
 	public uint MagazineCount;
 	public float BulletSpeed;
@@ -26,6 +25,17 @@ public class Shooting : MonoBehaviour
 				bulletsLeft--;
 			}
 		}
-
+		if (bulletsLeft >=0 && bulletsLeft <=MagazineSize)
+		{
+			Reload();
+		}
+	}
+	private void Reload()
+	{
+		if (MagazineCount > 0)
+		{
+			bulletsLeft = MagazineSize;
+			MagazineCount--;
+		}
 	}
 }

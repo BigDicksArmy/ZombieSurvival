@@ -239,13 +239,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1995795847205076}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 701189ae3ac5b114ea7e36999c0b5fb6, type: 3}
+  m_Script: {fileID: 11500000, guid: 276cb3ac1ffba1a47b83654993eb697f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 1986671153995694, guid: a176369e18b90314798dcb2967e6a872,
-    type: 2}
-  bulletSpawn: {fileID: 4026747571771534}
-  BulletSpeed: 10
+  speed: 1
+  canGoUp: 0
 --- !u!114 &114632838738941372
 MonoBehaviour:
   m_ObjectHideFlags: 1

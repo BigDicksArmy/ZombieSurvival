@@ -87,12 +87,12 @@
     <Compile Include="Assets\_Scripts\CameraFollow.cs" />
     <Compile Include="Assets\_Scripts\Collect.cs" />
     <Compile Include="Assets\_Scripts\ExtensionMethods\ExtensionMethods.cs" />
+    <Compile Include="Assets\_Scripts\Objects.cs" />
     <Compile Include="Assets\_Scripts\PlayerScripts\ArmRotation.cs" />
     <Compile Include="Assets\_Scripts\PlayerScripts\CharacterController.cs" />
     <Compile Include="Assets\_Scripts\PlayerScripts\Equipment.cs" />
     <Compile Include="Assets\_Scripts\PlayerScripts\GoingUp.cs" />
     <Compile Include="Assets\_Scripts\Shooting.cs" />
-    <Compile Include="Assets\_Scripts\Weapon.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
