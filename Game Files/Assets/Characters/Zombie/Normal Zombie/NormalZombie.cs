@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// zrobic, ze jesli closest_waypoint to gracz, to olac wszystko i do niego isc
+
 public class NormalZombie : MonoBehaviour {
 
     private CharacterController thePlayer;
@@ -9,6 +11,8 @@ public class NormalZombie : MonoBehaviour {
     private Rigidbody2D rb;
 
     public GameObject player_object;
+    public GameObject player_closest_waypoint;
+
     public GameObject closest_waypoint;
     private WaypointManager waypoint_manager;
 
@@ -18,14 +22,8 @@ public class NormalZombie : MonoBehaviour {
     private float vertical_velocity;
     private float save_gravity;
 
-    // public List<OneWaypoint> OPEN;
-    // public List<OneWaypoint> CLOSE;
-
     void Start() {
         player_object = GameObject.FindGameObjectWithTag("Player");
-
-        //OPEN = new List<OneWaypoint>();
-        //CLOSE = new List<OneWaypoint>();
 
         rb = GetComponent<Rigidbody2D>();
         thePlayer = FindObjectOfType<CharacterController>();
@@ -34,21 +32,39 @@ public class NormalZombie : MonoBehaviour {
         save_gravity = rb.gravityScale;
 
         closest_waypoint = waypoint_manager.FindClosestWaypoint(gameObject);
-        
+        next_waypoint = closest_waypoint;
+        dijsktra();
     }
+    public GameObject next_waypoint;
+    void Update()
+    {
+        if (waypoint_manager.FindClosestWaypoint(player_object) != player_closest_waypoint)
+        {
+            dijsktra();
+        }
 
-    void Update() {
-        rb.transform.position = Vector2.MoveTowards(rb.transform.position, closest_waypoint.transform.position, speed * Time.deltaTime);
+        if (transform.position == next_waypoint.transform.position)
+        {
+            if (path.Count > 0) // inaczej do gracza
+            {
+                next_waypoint = path[path.Count - 1];
+                path.RemoveAt(path.Count - 1);
+            }
+            else
+            {
+                next_waypoint = player_object;
+            }
+        }
+        rb.transform.position = Vector2.MoveTowards(rb.transform.position, next_waypoint.transform.position, speed * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.Return))
             dijsktra();
-
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.name == "Player")
-            Debug.Log("Odgryzlem Ci kurwa ryj");
+            Debug.Log("Odgryzlem Ci  ryj");
     }
 
     public List<GameObject> Q;
@@ -63,12 +79,6 @@ public class NormalZombie : MonoBehaviour {
         }
         closest_waypoint.GetComponent<OneWaypoint>().dist = 0; // distance from source to source
 
-        //for (int i = 0; i < waypoint_manager.all_waypoints.Count; ++i)
-        //{
-        //    if (waypoint_manager.all_waypoints[i].GetComponent<OneWaypoint>().dist == 0)
-        //        Debug.Log("WTF");
-        //}
-
         Q.AddRange(waypoint_manager.all_waypoints);
         while (Q.Count > 0)
         {
@@ -78,28 +88,39 @@ public class NormalZombie : MonoBehaviour {
                 if (u.GetComponent<OneWaypoint>().dist > Q[i].GetComponent<OneWaypoint>().dist)
                     u = Q[i];
             }
-            Debug.Log(u.GetComponent<OneWaypoint>().dist);
             Q.Remove(u);
 
             float alt;
-            for (int i = 0; i < u.GetComponent<OneWaypoint>().adjacent_waypoints.Count; ++i) // nizej jeszcze 1 if z ?
+            for (int i = 0; i < u.GetComponent<OneWaypoint>().adjacent_waypoints.Count; ++i)
             {
-                if (Q.Contains(u.GetComponent<OneWaypoint>().adjacent_waypoints[i])) //??
+                if (Q.Contains(u.GetComponent<OneWaypoint>().adjacent_waypoints[i]))
                 {
-                    alt = u.GetComponent<OneWaypoint>().dist + u.GetComponent<OneWaypoint>().adjacent_waypoints_cost[i];  // z closest waypoint do u + z u do aktywnego z adjacent waypointow
-                    Debug.Log(u.GetComponent<OneWaypoint>().dist + "  " + u.GetComponent<OneWaypoint>().adjacent_waypoints_cost[i]);
-                    //Debug.Log(alt + "  " + u.GetComponent<OneWaypoint>().adjacent_waypoints[i].GetComponent<OneWaypoint>().dist);
+                    //alt = u.GetComponent<OneWaypoint>().dist + u.GetComponent<OneWaypoint>().adjacent_waypoints_cost[i];  // z closest waypoint do u + z u do aktywnego z adjacent waypointow
+                    alt = u.GetComponent<OneWaypoint>().dist + (u.transform.position - u.GetComponent<OneWaypoint>().adjacent_waypoints[i].transform.position).magnitude;
 
                     if (alt < u.GetComponent<OneWaypoint>().adjacent_waypoints[i].GetComponent<OneWaypoint>().dist)
                     {
-                        Debug.Log("Zmieniam wazny element");
                         u.GetComponent<OneWaypoint>().adjacent_waypoints[i].GetComponent<OneWaypoint>().dist = alt;
                         u.GetComponent<OneWaypoint>().adjacent_waypoints[i].GetComponent<OneWaypoint>().prev = u;
                     }
                 }
             }
-
         }
+        create_path();
+    }
+
+    public List<GameObject> path;
+    void create_path()
+    {
+        path.Clear();
+        player_closest_waypoint = waypoint_manager.FindClosestWaypoint(player_object);
+        GameObject last = player_closest_waypoint;
+        while (last.GetComponent<OneWaypoint>().prev != null)
+        {
+            path.Add(last);
+            last = last.GetComponent<OneWaypoint>().prev;
+        }
+        path.Add(closest_waypoint);
     }
 
     /////////////////////////////// to moze zadzialac
