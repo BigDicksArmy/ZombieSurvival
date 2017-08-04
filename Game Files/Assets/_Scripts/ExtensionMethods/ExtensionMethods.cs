@@ -18,6 +18,6 @@
 				return tmp;
 			}
 		}
-		return "kupa";
+		return "0x0";
 	}
 }

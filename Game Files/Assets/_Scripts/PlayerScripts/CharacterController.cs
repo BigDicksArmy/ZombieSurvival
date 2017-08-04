@@ -24,7 +24,7 @@ public class CharacterController : MonoBehaviour
 	{
 		float h = Input.GetAxis("Horizontal");
 		var horizontal_speed = speed * h;
-		rb.velocity = new Vector2(horizontal_speed, 0);
+		rb.velocity = new Vector2(horizontal_speed, rb.velocity.y);
 
 		if (canGoUp)
 		{

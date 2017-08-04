@@ -2,6 +2,9 @@
 
 public class Weapons
 {
+	/*
+	 Make the weapon prefabs load from one folder
+	 */
 	//Stores Game Objects which are representations of weapons
 	//not a list but list sounds better than array
 	public GameObject[] WeaponList;

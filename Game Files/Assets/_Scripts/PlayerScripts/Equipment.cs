@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Reflection;
+using UnityEngine;
 
 namespace Player
 {
@@ -69,7 +71,7 @@ namespace Player
 
 		public GameObject Search(string name)
 		{
-			for (int i = 0; i < EquipmentSize; i++)
+			for (int i = 0; i < WeaponsCount; i++)
 			{
 				if (Weapons[i].name == name)
 				{
@@ -91,13 +93,13 @@ namespace Player
 			Weapons = new GameObject[EquipmentSize];
 			WeaponsCount = 0;
 		}
-		private void SelectWeapon(string name) 
-		{			
+		private void SelectWeapon(string name)
+		{
 			for (int i = 0; i < Weapons.Length; i++)
 			{
 				if (Weapons[i].name == name)
 				{
-					WeaponPlace.transform.position = LastWeaponPlace;
+					WeaponPlace.transform.localPosition = LastWeaponPlace;
 					spriteRenderer.sprite = Weapons[i].GetComponent<SpriteRenderer>().sprite;
 					Vector3 offset = Weapons[i].transform.Find("GripSpot").position + Weapons[i].transform.position;
 					WeaponPlace.transform.localPosition -= offset;
@@ -109,13 +111,21 @@ namespace Player
 		{
 			if (!IsEmpty)
 			{
-				if (Input.GetKeyDown(KeyCode.Alpha1) && Search("Shotgun")) //null reference exc when less than one weapon propably smth 2 do with the search()
+				try
 				{
-					SelectWeapon("Shotgun");
+					//PUT HERE EVERY 
+					if (Input.GetKeyDown(KeyCode.Alpha1) && Search("Shotgun")) //null reference exc when less than one weapon propably smth 2 do with the search()
+					{
+						SelectWeapon("Shotgun");
+					}
+					if (Input.GetKeyDown(KeyCode.Alpha2) && Search("Uzi"))
+					{
+						SelectWeapon("Uzi");
+					}
 				}
-				if (Input.GetKeyDown(KeyCode.Alpha2) && Search("Uzi"))
+				catch (NullReferenceException ex) //the search function returns null if no such object found
 				{
-					SelectWeapon("Uzi");
+					Debug.Log("No weapon found");
 				}
 			}
 		}

@@ -21,6 +21,7 @@ public class Shooting : MonoBehaviour
 		{
 			if (bulletsLeft > 0)
 			{
+				//Instantiate(Objects.Bullets[weaponName]);
 				//weapon.shot();
 				bulletsLeft--;
 			}
