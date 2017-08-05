@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Player;
+using System;
 
 public class Collect : MonoBehaviour
 {
@@ -10,12 +11,10 @@ public class Collect : MonoBehaviour
 	private SpriteRenderer spriteRenderer;
 	private GameObject WeaponPlace;
 	private Equipment eq;
-	private Shooting mechanics;
 	private void Awake()
 	{
 		objectName = gameObject.name.RemoveAfter('_'); //Get the name of the weapon i.e. shotgun_collectable is a shotgun
-		weaponPrefab = Objects.Weapons[objectName];
-		mechanics = weaponPrefab.GetComponent<Shooting>();
+		weaponPrefab = Objects.WeaponList.Find( gm => gm.name == objectName ); //find the weapon with the specified name
 		eq = FindObjectOfType<Equipment>(); //Players equipment
 		WeaponPlace = GameObject.Find("WeaponPlace"); //Where the weapon sprite should go
 		spriteRenderer = WeaponPlace.GetComponent<SpriteRenderer>();    //sprite renderer of the gm where the weapon should be placed
@@ -41,5 +40,4 @@ public class Collect : MonoBehaviour
 			Destroy(gameObject);									//Destroy the object that was collected
 		}
 	}
-
 }

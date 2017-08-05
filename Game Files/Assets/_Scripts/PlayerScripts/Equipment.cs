@@ -9,12 +9,19 @@ namespace Player
 		private SpriteRenderer spriteRenderer;
 		private GameObject WeaponPlace;
 		private Vector3 LastWeaponPlace;
+		private GameObject FirstWeapon;
+		private GameObject SecondWeapon;
+		private Vector3 FirstBulletSpawn;
+		private Vector3 SecondBulletSpawn;
+
 
 		//PUBLIC VARIABLES
 		public int EquipmentSize;
 		public int WeaponsCount;
-		public GameObject[] Weapons;
+		public GameObject CurrentWeapon;
+		public Vector3 CurrentBulletSpawn;
 
+		#region Eq Managment
 		//PUBLIC PROPERTIES
 		public bool IsEmpty
 		{
@@ -43,43 +50,56 @@ namespace Player
 		//PUBLIC METHODS
 		public void Add(GameObject obj)
 		{
-			if (!Search(obj))
+			CurrentWeapon = obj;
+			CurrentBulletSpawn = ReturnBulletSpawn(obj);
+			Shooting sh;
+			var comp = WeaponPlace.GetComponent<Shooting>();
+			if (FirstWeapon == null)
 			{
-				WeaponsCount++;
-				if (WeaponsCount - 1 < EquipmentSize)
+				FirstWeapon = obj;
+				FirstBulletSpawn = FirstWeapon.transform.Find("BulletSpawn").localPosition;
+				sh = FirstWeapon.GetComponent<Shooting>();
+				if (comp != null)
 				{
-					Weapons[WeaponsCount - 1] = obj;
+					CopyComponent(comp, sh);
 				}
 				else
 				{
-					WeaponsCount = EquipmentSize;
+					comp = WeaponPlace.AddComponent<Shooting>();
+					CopyComponent(comp, sh);
 				}
+				WeaponsCount++;
 			}
-		}
-
-		public bool Search(GameObject obj)
-		{
-			for (int i = 0; i < EquipmentSize; i++)
+			else if (SecondWeapon == null && FirstWeapon != null)
 			{
-				if (Weapons[i] == obj)
+				SecondWeapon = obj;
+				SecondBulletSpawn = SecondWeapon.transform.Find("BulletSpawn").localPosition;
+				sh = SecondWeapon.GetComponent<Shooting>();
+				if (comp != null)
 				{
-					return true;
+					CopyComponent(comp, sh);
 				}
+				else
+				{
+					comp = WeaponPlace.AddComponent<Shooting>();
+					CopyComponent(comp, sh);
+				}
+				WeaponsCount++;
 			}
-			return false;
-		}
-
-		public GameObject Search(string name)
-		{
-			for (int i = 0; i < WeaponsCount; i++)
+			else
 			{
-				if (Weapons[i].name == name)
-				{
-					return Weapons[i];
-				}
+				Debug.Log("No space for another weapon");
 			}
-			return null;
 		}
+		//Copies some important values to another component
+		private void CopyComponent(Shooting thisShooting, Shooting shooting)
+		{
+			thisShooting.MagazineSize = shooting.MagazineSize;
+			thisShooting.MagazineCount = shooting.MagazineCount;
+			thisShooting.BulletSpeed = shooting.BulletSpeed;
+			thisShooting.BulletsLeft = shooting.BulletsLeft;
+		}
+		#endregion
 
 		//PRIVATE METHODS
 		private void Awake()
@@ -90,44 +110,40 @@ namespace Player
 		private void Start()
 		{
 			LastWeaponPlace = WeaponPlace.transform.localPosition;
-			Weapons = new GameObject[EquipmentSize];
 			WeaponsCount = 0;
 		}
-		private void SelectWeapon(string name)
+		private void SelectWeapon(GameObject weapon)
 		{
-			for (int i = 0; i < Weapons.Length; i++)
-			{
-				if (Weapons[i].name == name)
-				{
-					WeaponPlace.transform.localPosition = LastWeaponPlace;
-					spriteRenderer.sprite = Weapons[i].GetComponent<SpriteRenderer>().sprite;
-					Vector3 offset = Weapons[i].transform.Find("GripSpot").position + Weapons[i].transform.position;
-					WeaponPlace.transform.localPosition -= offset;
-					break;
-				}
-			}
+			CurrentWeapon = weapon;
+			CurrentBulletSpawn = ReturnBulletSpawn(weapon);
+			WeaponPlace.transform.localPosition = LastWeaponPlace;
+			spriteRenderer.sprite = weapon.GetComponent<SpriteRenderer>().sprite;
+			Vector3 offset = weapon.transform.Find("GripSpot").position + weapon.transform.position;
+			WeaponPlace.transform.localPosition -= offset;
+
 		}
 		private void Update()
 		{
 			if (!IsEmpty)
 			{
-				try
+				//PUT HERE EVERY 
+				if (Input.GetKeyDown(KeyCode.Alpha1) && (FirstWeapon != null)) 
 				{
-					//PUT HERE EVERY 
-					if (Input.GetKeyDown(KeyCode.Alpha1) && Search("Shotgun")) //null reference exc when less than one weapon propably smth 2 do with the search()
-					{
-						SelectWeapon("Shotgun");
-					}
-					if (Input.GetKeyDown(KeyCode.Alpha2) && Search("Uzi"))
-					{
-						SelectWeapon("Uzi");
-					}
+					SelectWeapon(FirstWeapon);
+					Shooting sh = CurrentWeapon.GetComponent<Shooting>();
+					CopyComponent(WeaponPlace.GetComponent<Shooting>(), sh);
 				}
-				catch (NullReferenceException ex) //the search function returns null if no such object found
+				if (Input.GetKeyDown(KeyCode.Alpha2) && (SecondWeapon != null))
 				{
-					Debug.Log("No weapon found");
+					SelectWeapon(SecondWeapon);
+					Shooting sh = CurrentWeapon.GetComponent<Shooting>();
+					CopyComponent(WeaponPlace.GetComponent<Shooting>(), sh);
 				}
 			}
+		}
+		private Vector3 ReturnBulletSpawn(GameObject obj)
+		{
+			return obj.transform.Find("BulletSpawn").localPosition;
 		}
 	}
 }

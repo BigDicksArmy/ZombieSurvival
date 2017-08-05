@@ -4,29 +4,33 @@ using UnityEngine;
 
 public class Shooting : MonoBehaviour
 {
+	public uint BulletsLeft;
 	public uint MagazineSize;
 	public uint MagazineCount;
 	public float BulletSpeed;
 
-	private uint bulletsLeft;
-
+	private Player.Equipment equipment;
+	private GameObject Bullet;
 	private void Awake()
 	{
-
+		Bullet = Objects.Bullet;
+		equipment = transform.parent.GetComponent<Player.Equipment>();
 	}
 
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Mouse0))
 		{
-			if (bulletsLeft > 0)
+			if (BulletsLeft > 0)
 			{
-				//Instantiate(Objects.Bullets[weaponName]);
-				//weapon.shot();
-				bulletsLeft--;
+				GameObject bullet = Instantiate(Bullet, equipment.CurrentBulletSpawn, transform.rotation, null); //repair this shit
+				//bullet.transform.
+				//Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+				//rb.velocity = new Vector2(BulletSpeed,rb.velocity.y);
+				BulletsLeft--;
 			}
 		}
-		if (bulletsLeft >=0 && bulletsLeft <=MagazineSize)
+		if (Input.GetKeyDown(KeyCode.R) &&BulletsLeft >= 0 && BulletsLeft <= MagazineSize)
 		{
 			Reload();
 		}
@@ -35,7 +39,7 @@ public class Shooting : MonoBehaviour
 	{
 		if (MagazineCount > 0)
 		{
-			bulletsLeft = MagazineSize;
+			BulletsLeft = MagazineSize;
 			MagazineCount--;
 		}
 	}
