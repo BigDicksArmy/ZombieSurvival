@@ -93,6 +93,7 @@
     <Compile Include="Assets\_Scripts\PlayerScripts\Equipment.cs" />
     <Compile Include="Assets\_Scripts\PlayerScripts\GoingUp.cs" />
     <Compile Include="Assets\_Scripts\Shooting.cs" />
+    <Compile Include="Assets\Bullet.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

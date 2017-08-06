@@ -110,10 +110,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 395ccc6ebf0e79647af55aa9eb5cd8da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletSpawn: {fileID: 1293403062543250}
   BulletsLeft: 0
   MagazineSize: 30
   MagazineCount: 5
-  BulletSpeed: 1
+  BulletSpeed: 450
+  FireRate: 600
+  firemode: 4
+  ReloadSpeed: 3
 --- !u!212 &212270952131799788
 SpriteRenderer:
   m_ObjectHideFlags: 1

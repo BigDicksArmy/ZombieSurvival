@@ -12,7 +12,6 @@ public class Objects : MonoBehaviour
 		WeaponList = new List<GameObject>();
 		WeaponList = LoadAll("_Prefabs/Weapons/Holdable");
 		Bullet = Load("_Prefabs/Weapons/Bullet");
-		Debug.Log(Bullet.name);
 	}
 
 	//Only to simplify the expressions

@@ -1,4 +1,5 @@
-﻿public static class ExtensionMethods
+﻿using UnityEngine;
+public static class ExtensionMethods
 {
 	public static string RemoveAfter(this string s, char sign)
 	{

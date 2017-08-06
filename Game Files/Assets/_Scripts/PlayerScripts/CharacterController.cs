@@ -37,20 +37,5 @@ public class CharacterController : MonoBehaviour
 		{
 			rb.gravityScale = save_gravity;
 		}
-
-		/*
-		if (Input.GetKeyDown(KeyCode.LeftArrow))
-		{
-			rb.velocity = new Vector2(-speed, 0);
-		}
-		else if (Input.GetKeyDown(KeyCode.RightArrow))
-		{
-			rb.velocity = new Vector2(speed, 0);
-		}
-        */
-		//if (Input.GetKeyUp(KeyCode.Space))
-		//{
-		//	Instantiate(Prefab, SpawnPosition.transform.position, Quaternion.identity);
-		//}
 	}
 }
