@@ -111,13 +111,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletSpawn: {fileID: 1784887360466354}
-  BulletsLeft: 0
-  MagazineSize: 30
-  MagazineCount: 52
-  BulletSpeed: 74
-  FireRate: 0
-  firemode: 0
-  ReloadSpeed: 0
+  stats:
+    BulletsLeft: 0
+    MagazineSize: 100
+    MagazineCount: 100
+    BulletSpeed: 1
+    FireRate: 30
+    ReloadSpeed: 1
+    BulletSpread: 3
+    firemode: 1
+    IsAutomatic: 0
+  clip: {fileID: 8300000, guid: 2a2a14363f1a8064d9efc8a1c31cab95, type: 3}
 --- !u!212 &212497542134493168
 SpriteRenderer:
   m_ObjectHideFlags: 1

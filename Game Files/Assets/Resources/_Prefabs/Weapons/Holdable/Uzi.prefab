@@ -27,7 +27,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1293403062543250
 GameObject:
   m_ObjectHideFlags: 0
@@ -78,7 +78,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1248842722424514}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2.725, y: -2.584, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_Children:
   - {fileID: 4667606768806996}
@@ -111,13 +111,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletSpawn: {fileID: 1293403062543250}
-  BulletsLeft: 0
-  MagazineSize: 30
-  MagazineCount: 5
-  BulletSpeed: 450
-  FireRate: 600
-  firemode: 4
-  ReloadSpeed: 3
+  stats:
+    BulletsLeft: 0
+    MagazineSize: 100
+    MagazineCount: 100
+    BulletSpeed: 1
+    FireRate: 10
+    ReloadSpeed: 1
+    BulletSpread: 5
+    firemode: 1
+    IsAutomatic: 1
+  clip: {fileID: 8300000, guid: b3d1452cf1913b344868cc5d531d1b0a, type: 3}
 --- !u!212 &212270952131799788
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -4,38 +4,53 @@ using UnityEngine;
 
 public class CharacterController : MonoBehaviour
 {
-	public float speed;
-	private Rigidbody2D rb;
+	public float HorizontalSpeed;
+	public float VerticalSpeed;
 
-	public bool canGoUp;
+	new private Rigidbody2D rigidbody;
+	private float normalGravity;
 
-	private float vertical_velocity;
-	private float save_gravity;
-	//public GameObject Prefab;
-	//public GameObject SpawnPosition;
 	void Start()
 	{
-		//Physics2D.gravity = Vector2.zero;
-		rb = GetComponent<Rigidbody2D>();
-		save_gravity = rb.gravityScale;
+		rigidbody = GetComponent<Rigidbody2D>();
+		normalGravity = rigidbody.gravityScale;
 	}
-
+	
 	void Update()
 	{
-		float h = Input.GetAxis("Horizontal");
-		var horizontal_speed = speed * h;
-		rb.velocity = new Vector2(horizontal_speed, rb.velocity.y);
-
-		if (canGoUp)
+		float horizontalMovement = HorizontalSpeed* Input.GetAxis("Horizontal");
+		Vector2 movement = new Vector2(horizontalMovement, 0);
+		rigidbody.AddForce(movement);
+	}
+	
+	#region OnCollison Functions
+	private void OnCollisionEnter2D(Collision2D collision)
+	{
+		if (collision.collider.CompareTag("Stairs"))
 		{
-			rb.gravityScale = 0f;
-
-			vertical_velocity = speed / 2 * Input.GetAxisRaw("Vertical");
-			rb.velocity = new Vector2(horizontal_speed, vertical_velocity);
-		}
-		else
-		{
-			rb.gravityScale = save_gravity;
+			GravityOff();
 		}
 	}
+	private void OnCollisionExit2D(Collision2D collision)
+	{
+		if (collision.collider.CompareTag("Stairs"))
+		{
+			GravityOn();
+		}
+	}
+	#endregion
+
+	#region Near stairs gravity
+	void GravityOff()
+	{
+		rigidbody.gravityScale = 0f;
+		float horizontalMovement = HorizontalSpeed * Input.GetAxis("Horizontal");
+		float verticalMovement = VerticalSpeed / 2 * Input.GetAxisRaw("Vertical");
+		rigidbody.AddForce(new Vector2(horizontalMovement, verticalMovement));
+	}
+	void GravityOn()
+	{
+		rigidbody.gravityScale = normalGravity;
+	}
+	#endregion
 }
