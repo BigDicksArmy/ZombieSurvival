@@ -17,12 +17,10 @@ public class MouswiseRotationApplier : MonoBehaviour
 		mainCamera = Camera.main;
 		ArmTransform = transform;
 	}
-	private void Start()
-	{
-	}
 	void Update()
 	{
-		Vector3 difference = mainCamera.ScreenToWorldPoint(Input.mousePosition) - ArmTransform.localPosition;
+		//Vector3 difference = mainCamera.ScreenToWorldPoint(Input.mousePosition) - ArmTransform.localPosition;
+		Vector3 difference = mainCamera.ScreenToWorldPoint(Input.mousePosition) - ArmTransform.position;
 		difference.Normalize();
 
 		float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg + rotationOffset;

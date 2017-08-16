@@ -83,15 +83,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\_Scripts\AudioManager.cs" />
-    <Compile Include="Assets\_Scripts\BulletController.cs" />
     <Compile Include="Assets\_Scripts\Interactable.cs" />
     <Compile Include="Assets\_Scripts\ItemPickup.cs" />
+    <Compile Include="Assets\_Scripts\Non-Behaviour\Utility.cs" />
+    <Compile Include="Assets\_Scripts\Non-Behaviour\WeaponDefinition.cs" />
     <Compile Include="Assets\_Scripts\PlayerScripts\CharacterController.cs" />
     <Compile Include="Assets\_Scripts\PlayerScripts\EquipmentController.cs" />
     <Compile Include="Assets\_Scripts\PlayerScripts\MouswiseRotationApplier.cs" />
-    <Compile Include="Assets\_Scripts\Utility.cs" />
     <Compile Include="Assets\_Scripts\WeaponController.cs" />
-    <Compile Include="Assets\_Scripts\WeaponStatistics.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

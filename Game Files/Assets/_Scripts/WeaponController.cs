@@ -1,20 +1,20 @@
 ﻿using System.Collections;
 using UnityEngine;
+
 public delegate void WeaponAction();
 public class WeaponController : MonoBehaviour
 {
-	public static event WeaponAction OnShot;
+	public static event WeaponAction ShotEvent;
 	public GameObject bulletSpawn;
 	public WeaponStats stats;
 	public AudioClip clip;
+	public float triggerPullTime = 0.1f;
 
 	private EquipmentController equipment;
 	private Transform weaponPlace;
 	private Transform spawn;
 	private Camera mainCamera;
-
 	private float timeToFire = 0f;
-	private float triggerPullTime = 0.1f;
 
 	private void Awake()
 	{
@@ -24,10 +24,7 @@ public class WeaponController : MonoBehaviour
 	}
 	private void Start()
 	{
-		stats = EquipmentController.Instance.Current.Firearm.GetComponent<WeaponController>().stats; // null ref
-		stats.firemode = FireMode.Single;
 		spawn = weaponPlace.Find("BulletSpawn");
-		spawn.localPosition = EquipmentController.Instance.Current.Firearm.transform.localPosition + bulletSpawn.transform.localPosition;
 	}
 
 	void FixedUpdate()
@@ -58,13 +55,14 @@ public class WeaponController : MonoBehaviour
 	#region Shooting Functions
 	private void Shot()
 	{
-		RaycastHit2D raycastInfo = Physics2D.Raycast(spawn.position, CalculateDirection());
-		if (OnShot!=null)
-		{
-			print("OnShot event triggered");
-			OnShot();
-		}
-		
+		Vector2 shotDir = CalculateDirection();
+		print(shotDir.ToString());
+		//RaycastHit2D raycastInfo = Physics2D.Raycast(spawn.position, shotDir);
+		//if (ShotEvent!=null)
+		//{
+		//	print("ShotEvent event triggered");
+		//	ShotEvent();
+		//}
 	}
 
 	private Vector2 CalculateDirection() //decided not to mess with the dot product of vectors

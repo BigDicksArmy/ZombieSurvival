@@ -14,7 +14,7 @@ public class ItemPickup : Interactable
 	{
 		try
 		{
-			obj = EquipmentController.Instance.inventory.Find(x => x.Firearm.name == name);
+			obj = EquipmentController.Instance.Inventory.Find(x => x.Firearm.name == name);
 		}
 		catch (NullReferenceException)
 		{
@@ -25,8 +25,13 @@ public class ItemPickup : Interactable
 	{
 		if (collision.CompareTag("Player"))
 		{
-			obj.Firearm.SetActive(true);
-			Destroy(this);
+			if (!obj.IsCollected)
+			{
+				obj.IsCollected = true;
+				EquipmentController.Instance.SelectWeapon(obj);
+				EquipmentController.Instance.WeaponsCount++;
+			}
+			Destroy(gameObject);
 		}
 	}
 }

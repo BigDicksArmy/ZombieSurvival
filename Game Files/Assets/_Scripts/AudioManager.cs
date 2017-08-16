@@ -4,23 +4,29 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-	//AudioClip weaponSound;
-	//AudioSource audioSource;
-	//void Awake()
-	//{
-	//	weaponSound = FindObjectOfType<WeaponController>().clip;
-	//	audioSource = GameObject.FindGameObjectWithTag("Player").GetComponent<AudioSource>();
-	//}
-	//void Update()
-	//{
-	//	if (audioSource.clip == null)
-	//	{
-	//		audioSource.clip = weaponSound;
-	//		WeaponController.OnShot += PlaySound;
-	//	}
-	//}
-	//void PlaySound()
-	//{
-	//	audioSource.Play();
-	//}
+	public AudioSource audioSource;
+	AudioClip lastAudioClip;
+	AudioClip currentAudioClip;
+	void Awake()
+	{
+		
+		currentAudioClip = lastAudioClip;
+	}
+	AudioClip GetSound()
+	{
+		return EquipmentController.Instance.Current.Firearm.GetComponent<WeaponController>().clip;
+	}
+	void Update()
+	{
+		currentAudioClip = GetSound();
+		if (lastAudioClip != currentAudioClip)
+		{
+			audioSource.clip = weaponSound;
+			WeaponController.ShotEvent += PlaySound;
+		}
+	}
+	void PlaySound()
+	{
+		audioSource.Play();
+	}
 }

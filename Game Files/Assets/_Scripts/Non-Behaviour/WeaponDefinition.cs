@@ -1,5 +1,16 @@
-﻿using System;
-using System.Reflection;
+﻿using UnityEngine;
+
+class Weapon
+{
+	public GameObject Firearm;
+	public bool IsCollected;
+
+	public Weapon(GameObject firearm, bool isCollected)
+	{
+		Firearm = firearm;
+		IsCollected = isCollected;
+	}
+}
 
 public enum FireMode
 {

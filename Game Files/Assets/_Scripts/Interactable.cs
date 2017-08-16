@@ -5,7 +5,8 @@ public abstract class Interactable : MonoBehaviour
 {
 	public float interactionRadius = 0;
 	new public string name = "";
-	new public CircleCollider2D collider;
+
+	new protected CircleCollider2D collider;
 
 	public virtual void Use()
 	{
