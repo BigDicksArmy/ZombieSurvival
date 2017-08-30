@@ -36,10 +36,10 @@ GameObject:
   - component: {fileID: 4730168966076326}
   - component: {fileID: 212497542134493168}
   - component: {fileID: 114777243071938724}
-  - component: {fileID: 114036624442910992}
+  - component: {fileID: 114500117589535100}
   m_Layer: 8
   m_Name: Shotgun
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,7 +100,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114036624442910992
+--- !u!114 &114500117589535100
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -126,11 +126,10 @@ MonoBehaviour:
   bulletSpawn: {fileID: 1784887360466354}
   stats:
     BulletsLeft: 0
-    MagazineSize: 100
+    MagazineSize: 2
     MagazineCount: 100
-    BulletSpeed: 1
-    FireRate: 30
-    ReloadSpeed: 1
+    FireRate: 0
+    ReloadSpeed: 3.3
     BulletSpread: 3
     firemode: 1
     IsAutomatic: 0
@@ -165,9 +164,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 734061615
+  m_SortingLayer: 1
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 221f0f69ab8b74c4cb6a0e5f4effcddf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

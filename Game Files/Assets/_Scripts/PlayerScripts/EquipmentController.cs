@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Utility;
 
 public delegate AudioClip EquipmentDel();
 public enum Selection
@@ -101,25 +102,17 @@ class EquipmentController : MonoBehaviour
 		WeaponHolder = transform.Find("WeaponHolder");
 		foreach (Transform child in WeaponHolder)
 		{
-			Debug.Log(child.name);
+			//Debug.Log(child.name);
 			Weapon tmp = new Weapon(child.gameObject, false);
 			Inventory.Add(tmp);
 		}
 		WeaponsCount = 0;
-		Current = Inventory.Find(gm => gm.Firearm.name == "Empty");     //Selecting the empty weapon
+		Current = Inventory.Find("Empty");     //Selecting the empty weapon
 	}
 	void Update()
 	{
 		if (!IsEmpty)
 		{
-			//if (Input.GetAxis("Mouse ScrollWheel") > 0)	This shit freezes unity for fucks sake
-			//{
-			//	SelectWheelWise(x => x++);
-			//}
-			//if (Input.GetAxis("Mouse ScrollWheel") < 0)
-			//{
-			//	SelectWheelWise(x => x--);
-			//}
 			if (Input.GetKeyDown(KeyCode.Alpha1))
 			{
 				SelectWeapon(Inventory[0]);
@@ -153,30 +146,5 @@ class EquipmentController : MonoBehaviour
 			}
 		}
 	}
-	//void SelectWheelWise(Operator operation)	//Fix this shit
-	//{
-	//	for (int i = 0; i < Inventory.Count; operation(i))
-	//	{
-	//		if (i < 0)
-	//			i = Inventory.Count - 1;
-	//		if (i == Inventory.Count - 1)
-	//			i = 0;
-	//		if (Inventory[i].Firearm.name != "Empty" && Inventory[i].IsCollected)
-	//		{
-	//			if (Inventory[i].Firearm.name == Current.Firearm.name)
-	//			{
-	//				if (i < 0)
-	//					i = Inventory.Count - 1;
-	//				if (i == Inventory.Count - 1)
-	//					i = 0;
-	//				Current = Inventory[i];
-	//				Current.Firearm.SetActive(true);
-	//				return;
-	//			}
-	//			Inventory[i].Firearm.SetActive(false);
-	//		}
-	//	}
-	//	Debug.Log("No weapon found");
-	//}
-#endregion
+	#endregion
 }

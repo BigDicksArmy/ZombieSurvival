@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
+using Utility;
 using System;
 
 public class ItemPickup : Interactable
 {
-	Weapon obj;
+	private Weapon obj;
+
 	private void Awake()
 	{
 		collider = GetComponent<CircleCollider2D>();
@@ -14,11 +15,11 @@ public class ItemPickup : Interactable
 	{
 		try
 		{
-			obj = EquipmentController.Instance.Inventory.Find(x => x.Firearm.name == name);
+			obj = EquipmentController.Instance.Inventory.Find(name);
 		}
 		catch (NullReferenceException)
 		{
-			Debug.LogError("Attach the weapon to the player under ");
+			Debug.LogError("Attach the weapon to the player under WeaponHolder object");
 		}
 	}
 	void OnTriggerEnter2D(Collider2D collision)

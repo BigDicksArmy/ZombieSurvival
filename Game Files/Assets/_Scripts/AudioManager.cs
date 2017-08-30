@@ -1,32 +1,34 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System;
 
 public class AudioManager : MonoBehaviour
 {
 	public AudioSource audioSource;
-	AudioClip lastAudioClip;
-	AudioClip currentAudioClip;
-	void Awake()
+
+	public WeaponController Controller
 	{
-		
-		currentAudioClip = lastAudioClip;
+		get
+		{
+			return EquipmentController.Instance.Current.Firearm.GetComponent<WeaponController>();
+		}
 	}
-	AudioClip GetSound()
+	public void PlaySound(AudioClip clip)
 	{
-		return EquipmentController.Instance.Current.Firearm.GetComponent<WeaponController>().clip;
+		audioSource.clip = clip;
+		audioSource.Play();
 	}
 	void Update()
 	{
-		currentAudioClip = GetSound();
-		if (lastAudioClip != currentAudioClip)
+		if (Controller != null)
 		{
-			audioSource.clip = weaponSound;
-			WeaponController.ShotEvent += PlaySound;
+			if (audioSource.clip != Controller.Shooting)
+			{
+				audioSource.clip = Controller.Shooting;
+				WeaponController._Shot = new WeaponAudio(PlaySound);
+				WeaponController._Reload = new WeaponAudio(PlaySound);
+			}
 		}
+		
 	}
-	void PlaySound()
-	{
-		audioSource.Play();
-	}
+
 }

@@ -70,7 +70,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionRadius: 2
   name: Shotgun
-  collider: {fileID: 58054151301571762}
 --- !u!212 &212624918455180124
 SpriteRenderer:
   m_ObjectHideFlags: 1

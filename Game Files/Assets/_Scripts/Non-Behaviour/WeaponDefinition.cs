@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-class Weapon
+public class Weapon
 {
 	public GameObject Firearm;
 	public bool IsCollected;
@@ -23,7 +23,6 @@ public struct WeaponStats
 	public uint BulletsLeft;
 	public uint MagazineSize;
 	public uint MagazineCount;
-	public float BulletSpeed;
 	public float FireRate;
 	public float ReloadSpeed;
 	public float BulletSpread;

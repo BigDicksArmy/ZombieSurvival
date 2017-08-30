@@ -1,13 +1,16 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public delegate void WeaponAction();
+public delegate void WeaponAudio(AudioClip clip);
 public class WeaponController : MonoBehaviour
 {
-	public static event WeaponAction ShotEvent;
+	public static WeaponAudio _Shot;
+	public static WeaponAudio _Reload;
+	public AudioClip Shooting;
+	public AudioClip Reloading;
+
 	public GameObject bulletSpawn;
 	public WeaponStats stats;
-	public AudioClip clip;
 	public float triggerPullTime = 0.1f;
 
 	private EquipmentController equipment;
@@ -21,13 +24,10 @@ public class WeaponController : MonoBehaviour
 		mainCamera = Camera.main;
 		weaponPlace = GetComponent<Transform>();
 		equipment = transform.parent.GetComponent<EquipmentController>();
-	}
-	private void Start()
-	{
 		spawn = weaponPlace.Find("BulletSpawn");
 	}
 
-	void FixedUpdate()
+	void Update()
 	{
 		switch (stats.firemode)
 		{
@@ -56,13 +56,10 @@ public class WeaponController : MonoBehaviour
 	private void Shot()
 	{
 		Vector2 shotDir = CalculateDirection();
-		print(shotDir.ToString());
-		//RaycastHit2D raycastInfo = Physics2D.Raycast(spawn.position, shotDir);
-		//if (ShotEvent!=null)
-		//{
-		//	print("ShotEvent event triggered");
-		//	ShotEvent();
-		//}
+		Debug.Log(shotDir.ToString());
+		RaycastHit2D raycastInfo = Physics2D.Raycast(spawn.position, shotDir);
+		_Shot?.Invoke(Shooting);
+		stats.BulletsLeft--;
 	}
 
 	private Vector2 CalculateDirection() //decided not to mess with the dot product of vectors
@@ -77,6 +74,7 @@ public class WeaponController : MonoBehaviour
 	{
 		if (stats.MagazineCount > 0 && stats.BulletsLeft < stats.MagazineSize)
 		{
+			_Reload?.Invoke(Reloading);
 			yield return new WaitForSeconds(time);
 			stats.BulletsLeft = stats.MagazineSize;
 			stats.MagazineCount--;
@@ -88,16 +86,14 @@ public class WeaponController : MonoBehaviour
 		{
 			timeToFire = Time.time + triggerPullTime;
 			Shot();
-			stats.BulletsLeft--;
 		}
 	}
 	void AutoShot()
 	{
 		if (Input.GetButton("Fire1") && stats.BulletsLeft > 0 && Time.time > timeToFire)
 		{
-			timeToFire = Time.time + 1 / stats.FireRate + triggerPullTime;
+			timeToFire = Time.time + 1 / stats.FireRate;
 			Shot();
-			stats.BulletsLeft--;
 		}
 	}
 	#endregion
