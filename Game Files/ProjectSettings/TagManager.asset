@@ -7,6 +7,9 @@ TagManager:
   - Enemy
   - Waypoint
   - Zombie
+  - Weapon
+  - Collectable
+  - Stairs
   layers:
   - Default
   - TransparentFX
