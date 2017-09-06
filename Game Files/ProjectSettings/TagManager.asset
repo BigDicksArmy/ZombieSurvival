@@ -10,6 +10,7 @@ TagManager:
   - Weapon
   - Collectable
   - Stairs
+  - PlayerHB
   layers:
   - Default
   - TransparentFX
@@ -46,4 +47,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Holdable
+    uniqueID: 3620712609
+    locked: 0
+  - name: Collectables
+    uniqueID: 1599963809
     locked: 0
