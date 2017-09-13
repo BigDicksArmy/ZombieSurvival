@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(CircleCollider2D))]
+[RequireComponent(typeof(SpriteRenderer))]
 public abstract class Interactable : MonoBehaviour
 {
-	public float interactionRadius = 0;
-	new public string name = "";
+    new public string name = "";
+    public float InteractionRadius = 0;
 
-	new protected CircleCollider2D collider;
+    protected SpriteRenderer Renderer;
+    new protected CircleCollider2D collider;
 
-	public virtual void Use()
-	{
-		Debug.Log("You have interacted with" + name);
-	}
+    public virtual void Use()
+    {
+        Debug.Log("You have interacted with" + name);
+    }
 }

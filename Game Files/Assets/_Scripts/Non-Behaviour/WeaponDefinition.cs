@@ -24,7 +24,6 @@ public struct WeaponStats
 	public uint MagazineSize;
 	public uint MagazineCount;
 	public float FireRate;
-	public float ReloadSpeed;
 	public float BulletSpread;
 	public FireMode firemode;
 	public bool IsAutomatic;
