@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 /*
     zrobic, ze jesli closest_waypoint to gracz, to olac wszystko i do niego isc
@@ -11,20 +12,59 @@
 
 public class NormalZombie : MonoBehaviour
 {
-    public float speed;
+    public Transform HealthBar;
+    public float MaxHealth;
+    public float CurrentHealth;
+    public float Damage;
+    public float Speed;
+
+    private GameObject next_waypoint;
+    private GameObject closest_waypoint;
     private Rigidbody2D rb;
-
-    public GameObject player_object;
-    //public Rigidbody2D player_rb;
-
-    public GameObject closest_waypoint;
     private WaypointManager waypoint_manager;
-
+    private GameObject player_object;
     private float vertical_velocity;
     private float save_gravity;
 
+    #region Properties
+    public bool IsGravityOff
+    {
+        get
+        {
+            return GetComponent<MovementController>().IsGravityOff;
+        }
+    }
+
+    bool IsWaypointNearbyX
+    {
+        get
+        {
+            if ((next_waypoint.transform.position.x >= rb.transform.position.x - 0.1) && (next_waypoint.transform.position.x <= rb.transform.position.x + 0.1)) // jesli jest przy tym waypoincie (względem x)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
+
+    bool IsWaypointNearbyY
+    {
+        get
+        {
+            if ((next_waypoint.transform.position.y >= rb.transform.position.y - 0.1) && (next_waypoint.transform.position.y <= rb.transform.position.y + 0.1)) // jesli jest przy tym waypoincie (względem x)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
+    #endregion
+
     void Start()
     {
+        CurrentHealth = MaxHealth;
+        HealthBar.localScale = new Vector3(MaxHealth / 10f, 2, 0);
+
         player_object = GameObject.FindGameObjectWithTag("Player");
         //player_rb = player_object.GetComponent<Rigidbody2D>();
 
@@ -33,37 +73,20 @@ public class NormalZombie : MonoBehaviour
 
         closest_waypoint = waypoint_manager.FindClosestWaypoint(gameObject);
         next_waypoint = closest_waypoint;
-        check_skip_turn();
+        CheckSkipTurn();
     }
-    public GameObject next_waypoint;
 
-	public bool IsGravityOff
-	{
-		get
-		{
-			return GetComponent<MovementController>().IsGravityOff;
-		}
-	}
-
-	bool is_waypoint_nearby_x()
+    public void DamageZombie(float Damage)
     {
-        if ((next_waypoint.transform.position.x >= rb.transform.position.x - 0.1) && (next_waypoint.transform.position.x <= rb.transform.position.x + 0.1)) // jesli jest przy tym waypoincie (względem x)
+        CurrentHealth -= Damage;
+        if (CurrentHealth <= 0)
         {
-            return true;
+            Destroy(gameObject);
         }
-        return false;
+        HealthBar.localScale = new Vector3(CurrentHealth / 10f, 2, 0);
     }
 
-    bool is_waypoint_nearby_y()
-    {
-        if ((next_waypoint.transform.position.y >= rb.transform.position.y - 0.1) && (next_waypoint.transform.position.y <= rb.transform.position.y + 0.1)) // jesli jest przy tym waypoincie (względem x)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    void check_skip_turn()
+    void CheckSkipTurn()
     {
         if (next_waypoint != null && next_waypoint.GetComponent<OneWaypoint>().prev != null)
             if ((next_waypoint.GetComponent<OneWaypoint>().on_stairs == false))// || (next_waypoint.GetComponent<OneWaypoint>().on_stairs == true && next_waypoint.GetComponent<OneWaypoint>().prev.GetComponent<OneWaypoint>().on_stairs == false))
@@ -75,7 +98,7 @@ public class NormalZombie : MonoBehaviour
                 }
             }
     }
-
+#warning Useless OnPlayerFloor Function
     bool on_player_floor()
     {
         if (next_waypoint != null && next_waypoint.GetComponent<OneWaypoint>().prev != null)
@@ -84,89 +107,18 @@ public class NormalZombie : MonoBehaviour
         return false;
     }
 
-    //void Move()
-    //{
-    //    if (next_waypoint != null)
-    //    {
-    //        if (canGoUp == true)
-    //        {
-    //            rb.gravityScale = 0;
-    //            if (is_waypoint_nearby_x() && next_waypoint.GetComponent<OneWaypoint>().on_stairs == true) // jesli jest w poblizu x od waypointa i jego waypoint jest na schodach
-    //            {                                                               
-    //                if (next_waypoint.transform.position.y > rb.transform.position.y) // idz w gore
-    //                {
-    //                    Debug.Log("gora");
-    //                    rb.velocity = new Vector2(0, speed / 2 * Time.deltaTime);
-    //                }
-    //                else if (next_waypoint.transform.position.y < rb.transform.position.y) // idz w dol
-    //                {
-    //                    Debug.Log("dol");
-    //                    rb.velocity = new Vector2(0, -speed / 2 * Time.deltaTime);
-    //                }
-
-    //                if (is_waypoint_nearby_y()) // jesli y jest mniej wiecej takie samo to przejdz do nastepnego waypointa
-    //                {
-    //                    Debug.Log("No");
-    //                    next_waypoint = next_waypoint.GetComponent<OneWaypoint>().prev;
-    //                    check_skip_turn();
-    //                }
-    //            }
-    //            else
-    //            {
-    //                if (rb.transform.position.x < next_waypoint.transform.position.x) // jak nie na schodach i waypoint po prawej to idz w prawo
-    //                {
-    //                    Debug.Log("Prawodol");
-    //                    rb.velocity = new Vector2(speed * Time.deltaTime, 0);
-    //                }
-    //                else if (rb.transform.position.x > next_waypoint.transform.position.x) // jak nie na schodach i waypoint po lewej to idz w lewo
-    //                {
-    //                    Debug.Log("Lewodol");
-    //                    rb.velocity = new Vector2(-speed * Time.deltaTime, 0);
-    //                }
-    //            }
-    //        }
-    //        else
-    //        {
-    //            rb.gravityScale = save_gravity;
-    //            if (is_waypoint_nearby_x() == true) // jesli nie jest na schodach i jest w poblizu x waypointa, to znajdz inny
-    //            {
-    //                Debug.Log("YES");
-    //                next_waypoint = next_waypoint.GetComponent<OneWaypoint>().prev;
-    //                check_skip_turn();
-    //            }
-    //            else
-    //            {
-    //                if (rb.transform.position.x < next_waypoint.transform.position.x) // jak nie na schodach i waypoint po prawej to idz w prawo
-    //                {
-    //                    Debug.Log("Prawo");
-    //                    rb.velocity = new Vector2(speed * Time.deltaTime, 0);
-    //                }
-    //                else if (rb.transform.position.x > next_waypoint.transform.position.x) // jak nie na schodach i waypoint po lewej to idz w lewo
-    //                {
-    //                    Debug.Log("Lewo");
-    //                    rb.velocity = new Vector2(-speed * Time.deltaTime, 0);
-    //                }
-    //            }
-    //        }
-    //    }
-    //    else
-    //    {
-    //        rb.velocity = new Vector2(0, rb.velocity.y);
-    //    }
-    //}
-
     void FixedUpdate()
     {
         //Move();
         if (next_waypoint != null)
         {
-            rb.transform.position = Vector2.MoveTowards(rb.transform.position, next_waypoint.transform.position, speed / 20 * Time.deltaTime);
+            rb.transform.position = Vector2.MoveTowards(rb.transform.position, next_waypoint.transform.position, Speed * Time.deltaTime);
             if (IsGravityOff)
             {
-               // rb.gravityScale = 0;
+                // rb.gravityScale = 0;
                 if (next_waypoint.GetComponent<OneWaypoint>().on_stairs == true)
                 {
-                    if (is_waypoint_nearby_y())
+                    if (IsWaypointNearbyY)
                     {
                         next_waypoint = next_waypoint.GetComponent<OneWaypoint>().prev;
                     }
@@ -174,8 +126,8 @@ public class NormalZombie : MonoBehaviour
             }
             else
             {
-               // rb.gravityScale = save_gravity;
-                if (is_waypoint_nearby_x() == true)
+                // rb.gravityScale = save_gravity;
+                if (IsWaypointNearbyX == true)
                 {
                     next_waypoint = next_waypoint.GetComponent<OneWaypoint>().prev;
                 }
@@ -209,7 +161,7 @@ public class NormalZombie : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.name == "Player")
-            Debug.Log("Odgryzlem Ci  ryj");
+            Debug.Log("Collided with player");
         if (other.tag == "Zombie")
         {
             Physics2D.IgnoreCollision(rb.GetComponent<Collider2D>(), other);

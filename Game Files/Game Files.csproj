@@ -87,6 +87,7 @@
     <Compile Include="Assets\_Scripts\PlayerScripts\EquipmentController.cs" />
     <Compile Include="Assets\_Scripts\PlayerScripts\MouswiseRotationApplier.cs" />
     <Compile Include="Assets\_Scripts\PlayerScripts\MovementController.cs" />
+    <Compile Include="Assets\_Scripts\PlayerScripts\PlayerController.cs" />
     <Compile Include="Assets\_Scripts\WaypointManager.cs" />
     <Compile Include="Assets\_Scripts\WeaponController.cs" />
     <Compile Include="Assets\Kacpel\tempscript.cs" />

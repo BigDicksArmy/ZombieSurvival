@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WeaponController : MonoBehaviour
 {
     public AudioClip Shooting;
     public AudioClip Reloading;
-
+    public Text Ammunition;
     public GameObject bulletSpawn;
     public WeaponStats stats;
     public float triggerPullTime = 0.1f;
@@ -25,7 +26,6 @@ public class WeaponController : MonoBehaviour
         spawn = weaponPlace.Find("BulletSpawn");
         mainCamera = Camera.main;
     }
-
     private void Update()
     {
         switch (stats.firemode)
@@ -49,6 +49,8 @@ public class WeaponController : MonoBehaviour
             //If AutoFire was on then switch to singleFire else switch to autoFire
             stats.firemode = stats.firemode == FireMode.Automatic ? stats.firemode = FireMode.Single : stats.firemode = FireMode.Automatic;
         }
+
+        Ammunition.text = stats.BulletsLeft + " / " + stats.MagazineCount*stats.MagazineSize;
     }
 
     #region Shooting Functions
