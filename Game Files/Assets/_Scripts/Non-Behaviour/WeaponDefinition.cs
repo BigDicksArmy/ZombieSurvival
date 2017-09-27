@@ -23,7 +23,8 @@ public struct WeaponStats
 	public uint BulletsLeft;
 	public uint MagazineSize;
 	public uint MagazineCount;
-	public float FireRate;
+    public float Damage;
+    public float FireRate;
 	public float BulletSpread;
 	public FireMode firemode;
 	public bool IsAutomatic;

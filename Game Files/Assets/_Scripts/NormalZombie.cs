@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System.Collections;
+using UnityEngine;
 
 /*
-    zrobic, ze jesli closest_waypoint to gracz, to olac wszystko i do niego isc
+    zrobic, ze jesli closestWaypoint to gracz, to olac wszystko i do niego isc
     
     wejscia do budynku zrobic innymi waypointami, zombie idzie tylko na poczatku do takiego,
     a potem nie widzi. Gracz w ogole nie widzi.
@@ -13,18 +13,18 @@ using UnityEngine.UI;
 public class NormalZombie : MonoBehaviour
 {
     public Transform HealthBar;
-    public float MaxHealth;
-    public float CurrentHealth;
-    public float Damage;
-    public float Speed;
+    public CapsuleCollider2D AttackTrigger;
 
-    private GameObject next_waypoint;
-    private GameObject closest_waypoint;
-    private Rigidbody2D rb;
-    private WaypointManager waypoint_manager;
-    private GameObject player_object;
-    private float vertical_velocity;
-    private float save_gravity;
+    private GameObject nextWaypoint;
+    private GameObject closestWaypoint;
+    private Rigidbody2D body;
+    private GameObject playerObject;
+    [SerializeField] private float currentHealth;
+    [SerializeField] private float attackRange;
+    [SerializeField] private float damage;
+    [SerializeField] private float attackInterval;
+    [SerializeField] private float speed;
+    [SerializeField] private float maxHealth;
 
     #region Properties
     public bool IsGravityOff
@@ -39,7 +39,7 @@ public class NormalZombie : MonoBehaviour
     {
         get
         {
-            if ((next_waypoint.transform.position.x >= rb.transform.position.x - 0.1) && (next_waypoint.transform.position.x <= rb.transform.position.x + 0.1)) // jesli jest przy tym waypoincie (względem x)
+            if ((nextWaypoint.transform.position.x >= body.transform.position.x - 0.1) && (nextWaypoint.transform.position.x <= body.transform.position.x + 0.1)) // jesli jest przy tym waypoincie (względem x)
             {
                 return true;
             }
@@ -51,120 +51,198 @@ public class NormalZombie : MonoBehaviour
     {
         get
         {
-            if ((next_waypoint.transform.position.y >= rb.transform.position.y - 0.1) && (next_waypoint.transform.position.y <= rb.transform.position.y + 0.1)) // jesli jest przy tym waypoincie (względem x)
+            if ((nextWaypoint.transform.position.y >= body.transform.position.y - 0.1) && (nextWaypoint.transform.position.y <= body.transform.position.y + 0.1)) // jesli jest przy tym waypoincie (względem x)
             {
                 return true;
             }
             return false;
         }
     }
+
+    public float CurrentHealth
+    {
+        get
+        {
+            return currentHealth;
+        }
+
+        set
+        {
+            currentHealth = value;
+        }
+    }
+
+    public float Damage
+    {
+        get
+        {
+            return damage;
+        }
+
+        set
+        {
+            damage = value;
+        }
+    }
+
+    public float Speed
+    {
+        get
+        {
+            return speed;
+        }
+
+        set
+        {
+            speed = value;
+        }
+    }
+
+    public float MaxHealth
+    {
+        get
+        {
+            return maxHealth;
+        }
+
+        set
+        {
+            maxHealth = value;
+        }
+    }
+
+    public float AttackInterval
+    {
+        get
+        {
+            return attackInterval;
+        }
+
+        set
+        {
+            attackInterval = value;
+        }
+    }
+
+    public float AttackRange
+    {
+        get
+        {
+            return attackRange;
+        }
+
+        set
+        {
+            attackRange = value;
+        }
+    }
     #endregion
 
+    void OnEnable()
+    {
+        AttackTrigger.size = new Vector2(AttackRange, AttackTrigger.size.y);    //Scale the trigger 
+        CurrentHealth = MaxHealth;
+    }
+    void Awake()
+    {
+        playerObject = GameObject.FindGameObjectWithTag("Player");
+        body = GetComponent<Rigidbody2D>();
+        closestWaypoint = WaypointManager.Instance.FindClosestWaypoint(gameObject);
+    }
     void Start()
     {
-        CurrentHealth = MaxHealth;
         HealthBar.localScale = new Vector3(MaxHealth / 10f, 2, 0);
-
-        player_object = GameObject.FindGameObjectWithTag("Player");
-        //player_rb = player_object.GetComponent<Rigidbody2D>();
-
-        rb = GetComponent<Rigidbody2D>();
-        waypoint_manager = FindObjectOfType<WaypointManager>();
-
-        closest_waypoint = waypoint_manager.FindClosestWaypoint(gameObject);
-        next_waypoint = closest_waypoint;
+        nextWaypoint = closestWaypoint;
         CheckSkipTurn();
-    }
-
-    public void DamageZombie(float Damage)
-    {
-        CurrentHealth -= Damage;
-        if (CurrentHealth <= 0)
-        {
-            Destroy(gameObject);
-        }
-        HealthBar.localScale = new Vector3(CurrentHealth / 10f, 2, 0);
-    }
-
-    void CheckSkipTurn()
-    {
-        if (next_waypoint != null && next_waypoint.GetComponent<OneWaypoint>().prev != null)
-            if ((next_waypoint.GetComponent<OneWaypoint>().on_stairs == false))// || (next_waypoint.GetComponent<OneWaypoint>().on_stairs == true && next_waypoint.GetComponent<OneWaypoint>().prev.GetComponent<OneWaypoint>().on_stairs == false))
-            {
-                if ((next_waypoint.transform.position.x > rb.transform.position.x && next_waypoint.GetComponent<OneWaypoint>().prev.transform.position.x < rb.transform.position.x)
-                 || (next_waypoint.transform.position.x < rb.transform.position.x && next_waypoint.GetComponent<OneWaypoint>().prev.transform.position.x > rb.transform.position.x))
-                {
-                    next_waypoint = next_waypoint.GetComponent<OneWaypoint>().prev;
-                }
-            }
-    }
-#warning Useless OnPlayerFloor Function
-    bool on_player_floor()
-    {
-        if (next_waypoint != null && next_waypoint.GetComponent<OneWaypoint>().prev != null)
-            if ((player_object.transform.position.y >= rb.transform.position.y - 0.1) && (player_object.transform.position.y <= rb.transform.position.y + 0.1))
-                return true;
-        return false;
     }
 
     void FixedUpdate()
     {
-        //Move();
-        if (next_waypoint != null)
+        if (nextWaypoint != null)
         {
-            rb.transform.position = Vector2.MoveTowards(rb.transform.position, next_waypoint.transform.position, Speed * Time.deltaTime);
+            body.transform.position = Vector2.MoveTowards(body.transform.position, nextWaypoint.transform.position, Speed * Time.deltaTime);
             if (IsGravityOff)
             {
-                // rb.gravityScale = 0;
-                if (next_waypoint.GetComponent<OneWaypoint>().on_stairs == true)
+                if (nextWaypoint.GetComponent<OneWaypoint>().on_stairs)
                 {
                     if (IsWaypointNearbyY)
                     {
-                        next_waypoint = next_waypoint.GetComponent<OneWaypoint>().prev;
+                        nextWaypoint = nextWaypoint.GetComponent<OneWaypoint>().prev;
                     }
                 }
             }
             else
             {
-                // rb.gravityScale = save_gravity;
-                if (IsWaypointNearbyX == true)
+                if (IsWaypointNearbyX)
                 {
-                    next_waypoint = next_waypoint.GetComponent<OneWaypoint>().prev;
+                    nextWaypoint = nextWaypoint.GetComponent<OneWaypoint>().prev;
                 }
             }
 
-            if (player_object.GetComponent<MovementController>().IsClosestWaypointChanged == true)
+            if (playerObject.GetComponent<MovementController>().IsClosestWaypointChanged)
             {
-                next_waypoint = waypoint_manager.FindClosestWaypoint(gameObject);
-                if (next_waypoint.GetComponent<OneWaypoint>().prev != null)
+                nextWaypoint = WaypointManager.Instance.FindClosestWaypoint(gameObject);
+                if (nextWaypoint.GetComponent<OneWaypoint>().prev != null)
                 {
-                    if (player_object.transform.position.x < next_waypoint.transform.position.x && next_waypoint.transform.position.x > next_waypoint.GetComponent<OneWaypoint>().prev.transform.position.x)
+                    if (playerObject.transform.position.x < nextWaypoint.transform.position.x && nextWaypoint.transform.position.x > nextWaypoint.GetComponent<OneWaypoint>().prev.transform.position.x)
                     {
-                        next_waypoint = next_waypoint.GetComponent<OneWaypoint>().prev;
+                        nextWaypoint = nextWaypoint.GetComponent<OneWaypoint>().prev;
                     }
                 }
             }
         }
         else
         {
-            next_waypoint = waypoint_manager.FindClosestWaypoint(gameObject);
-            if (next_waypoint.GetComponent<OneWaypoint>().prev != null)
+            nextWaypoint = WaypointManager.Instance.FindClosestWaypoint(gameObject);
+            if (nextWaypoint.GetComponent<OneWaypoint>().prev != null)
             {
-                if (player_object.transform.position.x < next_waypoint.transform.position.x && next_waypoint.transform.position.x > next_waypoint.GetComponent<OneWaypoint>().prev.transform.position.x)
+                if (playerObject.transform.position.x < nextWaypoint.transform.position.x && nextWaypoint.transform.position.x > nextWaypoint.GetComponent<OneWaypoint>().prev.transform.position.x)
                 {
-                    next_waypoint = next_waypoint.GetComponent<OneWaypoint>().prev;
+                    nextWaypoint = nextWaypoint.GetComponent<OneWaypoint>().prev;
                 }
             }
         }
     }
-
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D collider)
     {
-        if (other.name == "Player")
-            Debug.Log("Collided with player");
-        if (other.tag == "Zombie")
+        if (collider.tag == "PlayerHB")
         {
-            Physics2D.IgnoreCollision(rb.GetComponent<Collider2D>(), other);
+            StartCoroutine(DamagePlayer(Damage, AttackInterval));
+        }
+        if (collider.tag == "Zombie")
+        {
+            //Ignore the collision with another zombie
+            Physics2D.IgnoreCollision(body.GetComponent<Collider2D>(), collider);
         }
     }
+    void CheckSkipTurn()
+    {
+        if (nextWaypoint != null && nextWaypoint.GetComponent<OneWaypoint>().prev != null)
+            if ((nextWaypoint.GetComponent<OneWaypoint>().on_stairs == false))// || (nextWaypoint.GetComponent<OneWaypoint>().on_stairs == true && nextWaypoint.GetComponent<OneWaypoint>().prev.GetComponent<OneWaypoint>().on_stairs == false))
+            {
+                if ((nextWaypoint.transform.position.x > body.transform.position.x && nextWaypoint.GetComponent<OneWaypoint>().prev.transform.position.x < body.transform.position.x)
+                 || (nextWaypoint.transform.position.x < body.transform.position.x && nextWaypoint.GetComponent<OneWaypoint>().prev.transform.position.x > body.transform.position.x))
+                {
+                    nextWaypoint = nextWaypoint.GetComponent<OneWaypoint>().prev;
+                }
+            }
+    }
+
+    public void DamageZombie(float Damage)
+    {
+        CurrentHealth -= Damage; //Damage the zombie
+        if (CurrentHealth <= 0) //if no health left destroy the game object
+        {
+            Destroy(gameObject);
+            WavesManager.Instance.remainingZombies--; //update the remaining zombies count in the waves manager
+        }
+        HealthBar.localScale = new Vector3(CurrentHealth / 10f, 2, 0); // update the zombie health bar
+    }
+
+    public IEnumerator DamagePlayer(float Damage, float AttackInterval)
+    {
+        yield return new WaitForSecondsRealtime(AttackInterval);
+        PlayerController.Instance.DamagePlayer(Damage);
+    }
+
 }

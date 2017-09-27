@@ -2,7 +2,7 @@
 
 public class MovementController : MonoBehaviour
 {
-	public bool IsGravityOff;
+    public bool IsGravityOff;
 	public float HorizontalSpeed;
 	public float VerticalSpeed;
 	public bool IsClosestWaypointChanged;
@@ -11,7 +11,7 @@ public class MovementController : MonoBehaviour
 	new private Rigidbody2D rigidbody;
 	private float normalGravity;
 
-	void Start()
+    void Start()
 	{
 		rigidbody = GetComponent<Rigidbody2D>();
 		normalGravity = rigidbody.gravityScale;

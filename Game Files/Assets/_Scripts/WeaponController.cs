@@ -7,11 +7,13 @@ public class WeaponController : MonoBehaviour
     public AudioClip Shooting;
     public AudioClip Reloading;
     public Text Ammunition;
-    public GameObject bulletSpawn;
-    public WeaponStats stats;
-    public float triggerPullTime = 0.1f;
+    // public GameObject BulletSpawn;
+    public WeaponStats Stats;
+    public float TriggerPullTime = 0.1f;
+    public LayerMask DontHit;
 
-    private AudioSource Speaker;
+    private AudioSource speakerShot;
+    private AudioSource speakerReload;
     private EquipmentController equipment;
     private Transform weaponPlace;
     private Transform spawn;
@@ -22,84 +24,101 @@ public class WeaponController : MonoBehaviour
     {
         weaponPlace = GetComponent<Transform>();
         equipment = transform.parent.GetComponent<EquipmentController>();
-        Speaker = transform.parent.GetComponent<AudioSource>();
+        speakerShot = transform.parent.GetComponent<AudioSource>();
+        speakerReload = GetComponent<AudioSource>();
         spawn = weaponPlace.Find("BulletSpawn");
         mainCamera = Camera.main;
     }
-    private void Update()
+    void Update()
     {
-        switch (stats.firemode)
+        if (!speakerReload.isPlaying) //Shoot only if player stopped reloading
         {
-            case FireMode.Single:
-                SingleShot();
-                break;
-            case FireMode.Automatic:
-                AutoShot();
-                break;
-            default:
-                Debug.Log("Fire mode not choosen - not good");
-                break;
+            switch (Stats.firemode)
+            {
+                case FireMode.Single:
+                    SingleShot();
+                    break;
+                case FireMode.Automatic:
+                    AutoShot();
+                    break;
+                default:
+                    Debug.Log("Fire mode not choosen - not good");
+                    break;
+            }
+
         }
-        if (Input.GetKeyDown(KeyCode.R) && stats.BulletsLeft >= 0 && stats.BulletsLeft <= stats.MagazineSize)
+        if (Input.GetKeyDown(KeyCode.R) && Stats.BulletsLeft >= 0 && Stats.BulletsLeft <= Stats.MagazineSize)
         {
-            StartCoroutine(Reload());
+            if (!speakerReload.isPlaying) //Reload only if player stopped reloading
+            {
+                StartCoroutine(Reload());
+            }
         }
-        if (Input.GetKeyDown(KeyCode.V) && stats.IsAutomatic)
+        if (Input.GetKeyDown(KeyCode.V) && Stats.IsAutomatic)
         {
             //If AutoFire was on then switch to singleFire else switch to autoFire
-            stats.firemode = stats.firemode == FireMode.Automatic ? stats.firemode = FireMode.Single : stats.firemode = FireMode.Automatic;
+            Stats.firemode = Stats.firemode == FireMode.Automatic ? Stats.firemode = FireMode.Single : Stats.firemode = FireMode.Automatic;
         }
 
-        Ammunition.text = stats.BulletsLeft + " / " + stats.MagazineCount*stats.MagazineSize;
+        Ammunition.text = Stats.BulletsLeft + " / " + Stats.MagazineCount * Stats.MagazineSize;
     }
 
     #region Shooting Functions
+
     private void Shot()
     {
-        Vector2 shotDir = CalculateDirection();
-        Debug.Log(shotDir.ToString());
-        RaycastHit2D raycastInfo = Physics2D.Raycast(spawn.position, shotDir);
-        stats.BulletsLeft--;
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = CalculateDirection(mousePosition - (Vector2)spawn.position, Stats.BulletSpread);
+        RaycastHit2D raycastInfo = Physics2D.Raycast(spawn.position, direction, 100f, ~DontHit);
 
-        Speaker.clip = Shooting;
-        Speaker.Play();
+       //Debug.DrawLine(spawn.position, direction * 100, Color.yellow);
+
+        if (raycastInfo.transform != null && raycastInfo.transform.CompareTag("Zombie"))
+        {
+            NormalZombie hitZombie = raycastInfo.collider.GetComponentInParent<NormalZombie>();
+            hitZombie.DamageZombie(Stats.Damage);
+            Debug.Log("Zombie hit:" + hitZombie.name + ", HP: " + hitZombie.CurrentHealth);
+        }
+
+        Stats.BulletsLeft--;
+
+        speakerShot.clip = Shooting;
+        speakerShot.Play();
+    }
+    private Vector2 CalculateDirection(Vector2 shotDirection, float BulletSpread)
+    {
+        float Bounduary = shotDirection.magnitude * Mathf.Tan(Mathf.Deg2Rad * BulletSpread / 2);
+        float yCoord = UnityEngine.Random.Range(-Bounduary, Bounduary);
+        Vector2 direction = new Vector2(shotDirection.x, shotDirection.y + yCoord);
+        return direction;
     }
 
     private IEnumerator Reload()
     {
-        if (stats.MagazineCount > 0 && stats.BulletsLeft < stats.MagazineSize)
+        if (Stats.MagazineCount > 0 && Stats.BulletsLeft < Stats.MagazineSize)
         {
-            Speaker.clip = Reloading;
-            Speaker.Play();
+            speakerReload.clip = Reloading;
+            speakerReload.Play();
             yield return new WaitForSeconds(Reloading.length);
-            stats.BulletsLeft = stats.MagazineSize;
-            stats.MagazineCount--;
+            Stats.BulletsLeft = Stats.MagazineSize;
+            Stats.MagazineCount--;
         }
-    }
-
-    private Vector2 CalculateDirection()
-    {
-        Vector2 symmetryLine = mainCamera.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-        float Bounduary = symmetryLine.magnitude * Mathf.Tan(Mathf.Deg2Rad * stats.BulletSpread / 2);
-        float yCoord = UnityEngine.Random.Range(-Bounduary, Bounduary);
-        Vector2 direction = new Vector2(symmetryLine.x, symmetryLine.y + yCoord);
-        return direction;
     }
 
     private void SingleShot()
     {
-        if (Input.GetButtonDown("Fire1") && stats.BulletsLeft > 0 && Time.time > timeToFire)
+        if (Input.GetButtonDown("Fire1") && Stats.BulletsLeft > 0 && Time.time > timeToFire)
         {
-            timeToFire = Time.time + triggerPullTime;
+            timeToFire = Time.time + TriggerPullTime;
             Shot();
         }
     }
 
     private void AutoShot()
     {
-        if (Input.GetButton("Fire1") && stats.BulletsLeft > 0 && Time.time > timeToFire)
+        if (Input.GetButton("Fire1") && Stats.BulletsLeft > 0 && Time.time > timeToFire)
         {
-            timeToFire = Time.time + 1 / stats.FireRate;
+            timeToFire = Time.time + 1 / Stats.FireRate;
             Shot();
         }
     }

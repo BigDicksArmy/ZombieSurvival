@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4043319968632030}
   - component: {fileID: 212226164825281920}
   - component: {fileID: 61572800931295348}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4592382940411176}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Empty
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,7 +53,7 @@ GameObject:
   - component: {fileID: 4414607382201944}
   - component: {fileID: 212388058981921350}
   - component: {fileID: 82327762762701528}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: WeaponHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4494142045600824}
   - component: {fileID: 61137873301631052}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Body
   m_TagString: PlayerHB
   m_Icon: {fileID: 0}
@@ -87,7 +87,8 @@ GameObject:
   - component: {fileID: 212627531309831832}
   - component: {fileID: 114980864976649934}
   - component: {fileID: 114768810299937016}
-  m_Layer: 8
+  - component: {fileID: 82443527668226128}
+  m_Layer: 9
   m_Name: Uzi
   m_TagString: Weapon
   m_Icon: {fileID: 0}
@@ -106,7 +107,7 @@ GameObject:
   - component: {fileID: 124772892533757066}
   - component: {fileID: 92444304974103706}
   - component: {fileID: 81429035518078344}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -123,7 +124,7 @@ GameObject:
   - component: {fileID: 4231045168409002}
   - component: {fileID: 212655790919181490}
   - component: {fileID: 114764389402880588}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,7 +140,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4788019487348718}
   - component: {fileID: 68687650574018136}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Head
   m_TagString: PlayerHB
   m_Icon: {fileID: 0}
@@ -154,7 +155,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4257924325997122}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: GripSpot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,7 +170,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4916013976374072}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HitBoxes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,7 +185,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4188482718295998}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: GripSpot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -204,7 +205,7 @@ GameObject:
   - component: {fileID: 114627596946162400}
   - component: {fileID: 114273551770163378}
   - component: {fileID: 114752189470411954}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -219,7 +220,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4295134149342732}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: BulletSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -234,7 +235,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4475197446314656}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: BulletSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -252,7 +253,8 @@ GameObject:
   - component: {fileID: 212225362115328158}
   - component: {fileID: 114631929968746514}
   - component: {fileID: 114199935689085914}
-  m_Layer: 8
+  - component: {fileID: 82896261839948348}
+  m_Layer: 9
   m_Name: Shotgun
   m_TagString: Weapon
   m_Icon: {fileID: 0}
@@ -683,6 +685,168 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!82 &82443527668226128
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1482852574862800}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 6044c39667ae40c4387aae8e5f592b5f,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+--- !u!82 &82896261839948348
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1996393281363926}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 6044c39667ae40c4387aae8e5f592b5f,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!92 &92444304974103706
 Behaviour:
   m_ObjectHideFlags: 1
@@ -760,16 +924,19 @@ MonoBehaviour:
   Shooting: {fileID: 8300000, guid: 8f12bda8407e5c64a9bc37328b0bbb3d, type: 3}
   Reloading: {fileID: 8300000, guid: 344b9f93766dd21438e7106b8e02b182, type: 3}
   Ammunition: {fileID: 0}
-  bulletSpawn: {fileID: 1943686962323044}
-  stats:
+  Stats:
     BulletsLeft: 2
     MagazineSize: 2
-    MagazineCount: 20
+    MagazineCount: 10
+    Damage: 30
     FireRate: 0
-    BulletSpread: 3
+    BulletSpread: 5
     firemode: 1
     IsAutomatic: 0
-  triggerPullTime: 0.1
+  TriggerPullTime: 0.1
+  DontHit:
+    serializedVersion: 2
+    m_Bits: 1540
 --- !u!114 &114752189470411954
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -782,8 +949,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HealthBar: {fileID: 0}
-  MaxHealth: 100
-  CurrentHealth: 100
+  maxHealth: 100
+  currentHealth: 0
 --- !u!114 &114764389402880588
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -822,16 +989,19 @@ MonoBehaviour:
   Shooting: {fileID: 8300000, guid: 8de7e96395af9704a9962a7fc4577c8e, type: 3}
   Reloading: {fileID: 8300000, guid: abc31a0583e04f545b7651414f4939b0, type: 3}
   Ammunition: {fileID: 0}
-  bulletSpawn: {fileID: 1994495348392148}
-  stats:
+  Stats:
     BulletsLeft: 30
     MagazineSize: 30
     MagazineCount: 5
+    Damage: 5
     FireRate: 10
-    BulletSpread: 5
+    BulletSpread: 10
     firemode: 1
     IsAutomatic: 1
-  triggerPullTime: 0.1
+  TriggerPullTime: 0.1
+  DontHit:
+    serializedVersion: 2
+    m_Bits: 1540
 --- !u!124 &124772892533757066
 Behaviour:
   m_ObjectHideFlags: 1

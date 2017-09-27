@@ -3,9 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class WaypointManager : MonoBehaviour
-{ // jak skonczysz debugowac, to zamien na prywatne wszystko co sie da
+{
+    #region Singleton
+    private static WaypointManager _instance;
 
-	public List<GameObject> all_waypoints;
+    public static WaypointManager Instance
+    {
+        get
+        { return _instance; }
+
+        private set
+        { _instance = value; }
+    }
+
+    void Awake()
+    {
+        if (_instance != null)
+        {
+            Debug.LogError("More than one instance of a singleton detected");
+            return;
+        }
+        _instance = this;
+    }
+    #endregion
+
+    public List<GameObject> all_waypoints;
 	public GameObject player_object;
 	private GameObject player_closest_waypoint;
 
@@ -18,7 +40,6 @@ public class WaypointManager : MonoBehaviour
 		player_object.GetComponent<OneWaypoint>().adjacent_waypoints.Add(FindClosestWaypoint(player_object));
 
 		player_closest_waypoint = FindClosestWaypoint(player_object);
-		//player_closest_waypoint = Find_Closest_Adjacent_Waypoint(player_closest_waypoint);
 
 		player_object.GetComponent<MovementController>().IsClosestWaypointChanged = true;
 	}
@@ -41,7 +62,6 @@ public class WaypointManager : MonoBehaviour
 				player_object.GetComponent<OneWaypoint>().adjacent_waypoints.Remove(player_closest_waypoint);
 			}
 			player_closest_waypoint = FindClosestWaypoint(player_object);
-			//player_closest_waypoint = Find_Closest_Adjacent_Waypoint(player_closest_waypoint);
 			Debug.Log("Najblizej gracza: " + player_closest_waypoint.name);
 
 			player_closest_waypoint.GetComponent<OneWaypoint>().adjacent_waypoints.Add(player_object);
